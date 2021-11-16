@@ -1,7 +1,7 @@
 
 # Linear Regression
 
-##  Introduction {#sec:Intro}
+## Introduction {#sec:Intro}
 
 Suppose that we are trying to study two quantities $x$ and $y$ that we
 suspect are related -- at least approximately -- by a linear equation
@@ -22,8 +22,6 @@ the plot that seems to capture the true slope (and hence velocity) of
 the object.
 
 ![Physics Experiment](img/distance-vs-time.png){#fig:dvt width=50%}
-
-
 
 On the other hand, we might look at a graph such as
 @fig:mpg-vs-displacement, which plots the gas mileage of various car
@@ -81,15 +79,12 @@ $$ \begin{aligned} m &=
 
 where we must have $S_{xx}-\overline{x}^2\not=0$.
 
-
-
-
 ### Exercises {#sec:CalcExercises}
 
-1.  Verify that +@eq:LSAnswer is in fact the solution to the system in
+1. Verify that +@eq:LSAnswer is in fact the solution to the system in
     +@eq:LS.
 
-2.  Suppose that $S_{xx}-\overline{x}^2=0$.  What does that mean about
+2. Suppose that $S_{xx}-\overline{x}^2=0$.  What does that mean about
 the $x_i$?  Does it make sense that the problem of finding the "line
 of best fit" fails in this case?
 
@@ -164,8 +159,7 @@ equations that we obtained in +@eq:LSAnswer.
 
 ### Exercises
 
-1.  Verify that +@eq:LSAnswer and +@eq:LSAnswer2 are equivalent.
-
+1. Verify that +@eq:LSAnswer and +@eq:LSAnswer2 are equivalent.
 
 ## The Multivariate Case (Calculus) {#sec:Multivariate-calculus}
 
@@ -175,6 +169,7 @@ above at a scatterplot showing the relationship between gas mileage
 and engine size (displacement).  There are other factors that might
 contribute to gas mileage that we want to consider as well -- for
 example:
+
 - a car that is heavy compared to its engine size may get worse
   mileage
 - a sports car with a drive train that gives fast acceleration as
@@ -199,16 +194,16 @@ $w$, and $a$.  We will use the *tidy* data convention.
 **Tidy Data:** A dataset is tidy if it consists of values $x_{ij}$ for
 $i=1,\ldots,N$ and $j=1,\ldots, k$ so that:
 
-   - the row index corresponds to a *sample* -- a set of measurements
+- the row index corresponds to a *sample* -- a set of measurements
    from a single event or item;
-   - the column index corresponds to a *feature* -- a particular
+- the column index corresponds to a *feature* -- a particular
    property measured for all of the events or items.
 
 In our case,
 
-   - the *samples* are the different types of car models,
-   - the *features* are the properties of those car models.  
-   
+- the *samples* are the different types of car models,
+- the *features* are the properties of those car models.  
+
 For us, $N$ is the number of different types of cars, and $k$ is the
 number of properties we are considering.  Since we are looking at
 displacement, weight, and acceleration, we have $k=3$.
@@ -224,7 +219,6 @@ x_{21} & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \ddots & \vdots
 and the measured dependent variables $Y$ are a column vector $$ Y =
 \left[\begin{matrix} y_1 \\ y_2 \\ \vdots \\ y_N\end{matrix}\right].
 $$
-
 
 If $m_1,\ldots, m_k$ are "slopes" associated with these properties in
 +@eq:multivariate, and $b$ is the "intercept", then the predicted
@@ -284,7 +278,6 @@ The Calculus approach to minimizing the $MSE$ is to take its partial
 derivatives with respect to the $m_{i}$ and set them to zero.  Let's
 first work out the derivatives in a nice form for later.
 
-
 **Proposition:** The gradient of $MSE(M)=E$ is given by
 
 $$ \nabla E = \left[\begin{matrix} \df{M_1}E \\ \df{M_2}E \\ \vdots \\
@@ -299,7 +292,6 @@ the $j^{th}$ row of $X$ and $X[:,i]$ to mean the $i^{th}$ column of
 $X$.  (This is copied from the Python programming language; the ':'
 means that index runs over all possibilities).
 
-
 Since $$ E = \sum_{j=1}^{N} (Y_j-\sum_{s=1}^{k+1} X_{js}M_{s})^2 $$ we
 compute: $$\begin{aligned} \df{M_t}E &= -2\sum_{j=1}^{N}
 X_{jt}(Y_{j}-\sum_{s=1}^{k+1} X_{js}M_{s}) \\ &= -2(\sum_{j=1}^{N}
@@ -309,7 +301,7 @@ Y_{j}X_{jt} - \sum_{j=1}^{N}\sum_{s=1}^{k+1} X_{jt}X_{js}M_{s}) \\ &=
 -2(X^{\intercal}[t,:]Y - \sum_{s=1}^{k+1}\sum_{j=1}^{N}
 X^{\intercal}_{tj}X_{js}M_{s}) \\ &= -2(X^{\intercal}[t,:]Y -
 \sum_{s=1}^{k+1} (X^{\intercal}X)_{ts}M_{s}) \\ &=
--2(X^{\intercal}[t,:]Y - (X^{\intercal}X)[t,:]M)\\
+-2[X^{\intercal}[t,:]Y - (X^{\intercal}X](t,:)M)\\
 \end{aligned}$${#eq:gradient2}
 
 Stacking up the different rows to make $E$ yields the desired formula.
@@ -338,8 +330,8 @@ Here is how to think about this:
    2. The product $X^{\intercal}XM$ is a $(k+1)\times 1$ matrix.  Each
    entry is the dot product of the general element
    of $H$ with one of the $k+1$ basis vectors of $H$.  
-   
-   3.  The product $X^{\intercal}Y$ is a $(k+1)\times 1$ matrix whose
+
+   3. The product $X^{\intercal}Y$ is a $(k+1)\times 1$ matrix whose
    entries are the dot product of the basis vectors of $H$ with $Y$.
 
 Therefore, this equation asks for us to find $M$ so that the vector
@@ -390,10 +382,9 @@ problem.  In particular it must be invertible or our analysis above
 breaks down.  In the next section we will look more closely at this
 matrix and what information it encodes about our data.
 
-
 ## Centered coordinates {#sec:centered}
 
-Recall from last section that the matrix $D=X^{\intercal}X$ is of central importance to the study of the multivariate least squares problem. Let's look at it more closely.    
+Recall from last section that the matrix $D=X^{\intercal}X$ is of central importance to the study of the multivariate least squares problem. Let's look at it more closely.
 
 **Lemma:** The $i,j$ entry of $D$ is the dot product $$
 D_{ij}=X[:,i]\cdot X[:,j] $$ of the $i^{th}$ and $j^{th}$ columns of
@@ -420,7 +411,6 @@ invertible.  Then there is a nonzero vector $m$ with
 $Dm=X^{\intercal}Xm=0$.  This means that the vector $Xm$ is orthogonal
 to all of the columns of $X$.  Since $Xm$ belongs to the span $H$ of
 the columns of $X$, if it is orthogonal to $H$ it must be zero.
-
 
 In fact, the matrix $D$ captures some important statistical measures
 of our data, but to see this clearly we need to make a slight change
@@ -490,7 +480,6 @@ $N\times k$ matrix with $j^{th}$ row $(x_{j1},x_{j2},\ldots, x_{jk})$
 for $j=1,\ldots, N$ and the solutions are as given in +@eq:Msolution
 and +@eq:projection.
 
-
 ## Caveats about Linear Regression
 
 ### Basic considerations
@@ -499,18 +488,18 @@ Reflecting on our long discussion up to this point, we should take
 note of some of the potential pitfalls that lurk in the use of linear
 regression.
 
-1.  When we apply linear regression, we are explicitly assuming that
+1. When we apply linear regression, we are explicitly assuming that
     the variable $Y$ is associated to $X$ via linear
-equations.  This is a big assumption!   
+equations.  This is a big assumption!
 
-2.  When we use multilinear regression, we are assuming that changes
+2. When we use multilinear regression, we are assuming that changes
 in the different features have independent effects on the target
 variable $y$.  In other words, suppose that $y=ax_1+bx_2$.  Then an
 increase of $x_1$ by $1$ increases $y$ by $a$, and an increase of
 $x_2$ by $1$ increases $y$ by $b$.  These effects are independent of
 one another and combine to yield an increase of $a+b$.
 
-3.  We showed in our discussion above that linear regression problem
+3. We showed in our discussion above that linear regression problem
 has a solution when the matrix $D=X^{\intercal}X$ is invertible, and
 this happens when the columns of $D$ are linearly independent.  When
 working with real data, which is messy, we could have a situation in
@@ -551,8 +540,6 @@ can throw off the analysis very dramatically.  See +@fig:simpsons .
 
 ![Simpson's Effect](img/SimpsonsEffect.png){#fig:simpsons
 width=50%}
-
-
 
 ### Exercises
 
