@@ -684,7 +684,7 @@ $$
 This should look familiar! The maximum likelihood estimate of the variance
 is the  *mean-squared-error*.
 
-### Linear Regression and likelihood
+### Linear Regression and likelihood {#sec:LRLike}
 
 In our earlier lectures we discussed linear regression at length.  Our introduction of ideas
 from probability give us new insight into this fundamental tool.  Consider a statistical model
@@ -722,6 +722,13 @@ the mean squared error
 $$
 \sigma^2_*=\frac{1}{N}\sum_{i}(y_i-m_*x_i-b_*)^2.
 $$
+
+The multivariate case of regression proposes a model of the form
+$$
+Y=X\beta+\epsilon
+$$
+and a similar calculation again shows that the least squares estimates for $\beta$ are the maximum
+likelihood values for this model.
 
 ## Bayesian Inference
 
@@ -999,3 +1006,51 @@ $$
 In the situation of $55$ heads out of $100$, the maximum a posteriori estimate is $.546$ and
 the posterior mean is $.545$.  These numbers have been pulled just a bit towards $.5$ because our
 prior knowledge makes us a little bit biased towards $p=.5$.
+
+### Bayesian Regression (or Ridge Regression)
+
+In this chapter we return to our discussion of linear regression and introduce some Bayesian ideas.
+The combination will lead us to the notion of "ridge" regression, which is a type of linear regression that
+includes a prior distribution on the coefficients that indicates our preference for smaller rather than larger
+coefficients. Introduction of this prior leads to a form of linear regression that is more resilient in situations
+where the independent variables are less independent than we would hope.
+
+Before introducing these Bayesian ideas, let us recall from @sec:LRLike that ordinary least squares yields the
+parameters that give the "most likely" set of parameters for a model of the form
+$$
+Y=XM + \epsilon
+$$
+where the error $\epsilon$ is normally distributed with mean $0$ and variance $\sigma^2$, and the mean squared error becomes the maximum likelihood estimate of the variance $\sigma^2$.
+
+To put this into a Bayesian perspective, we notice that the linear regression model views $Y-XM$
+as normally distributed given $M$.  That is, we see the probability $P(Y-XM|M)$ as normal with variance
+$\sigma^2$.  
+
+Then we introduce a prior distribution on the coefficients $M$, assuming that they, too, are normally
+distributed around zero with variance $\tau^2$.  This means that *ab initio* we think that the coefficients
+are likely to be small.
+
+From Bayes Theorem, we then have
+$$
+P(M|Y,X) = \frac{P(Y,X|M)P(M)}{P(Y,X)}
+$$
+and in distribution terms we have
+$$
+P(M|Y,X) = Ae^{\|Y-XM\|^2/\sigma^2}e^{-\|M\|^2/\tau^{2}}
+$$
+where $A$ is a normalizing constant.
+
+The maximum likelihood estimate for the parameters $M$ occurs when $P(M|Y,X)$ is maximum,
+which we find by taking the derivatives.  Using the matrix algebra developed in our linear regression
+chapter, we obtain the equation
+$$
+(X^{\intercal}Y-(X^{\intercal}X)M)/\sigma^2-M/\tau^{2}=0
+$$
+or
+$$
+(X^{\intercal}X+\lambda)M=X^{\intercal}Y
+$${#eq:ridgeformula}
+where $\lambda=\sigma^2/\tau^2$.
+
+In practice, we view $\lambda$ as an adjustable parameter and the problem of solving @eq:ridgeformula
+is called "ridge regression."
