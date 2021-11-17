@@ -1,5 +1,4 @@
 
-
 # Principal Component Analysis
 
 ## Introduction
@@ -28,7 +27,7 @@ a great deal.
 
 Suppose that we have a collection of measurements $(x_1,\ldots, x_n)$ of a particular feature $X$.
 For example,  $x_i$ might be the initial weight of the $ith$ participant in our weight loss study.
-The mean of the values $(x_1,\ldots, x_n)$ is 
+The mean of the values $(x_1,\ldots, x_n)$ is
 
 $$
 \mu_{X} = \frac{1}{n}\sum_{i=1}^{n} x_{i}.
@@ -42,8 +41,6 @@ $$
 \sigma_{X}^2 = \frac{1}{n}\sum_{i=1}^{n} \left(x_{i}-\mu_{X}\right)^2 = \frac{1}{n}\left(\sum_{i=1}^{n} x_{i}^2\right)- \mu_{X}^2
 $${#eq:variance}
 
-
-
 The square root of the variance is called the *standard deviation.*
 
 As we see from the formula, the variance is a measure of how 'spread out' the data is from the mean.
@@ -56,9 +53,6 @@ distance from the point $X=(x_1,\ldots, x_n)$ to the point $\mu_{X}(1,1,\ldots,1
 $$
 \sigma_{X}^2 = \frac{1}{n}(X-\mu_{X}E)\cdot(X-\mu_{X}E)  = \frac{1}{n}\|X-\mu_{X}E\|^2.
 $${#eq:variancedot}
-
-
-
 
 ### Covariance
 
@@ -82,10 +76,9 @@ $$
 \sigma_{XY} = \frac{1}{N} ((X-\mu_{X}E)\cdot (Y-\mu_{Y}E)).
 $$
 
-From this point of view, we can see that $\sigma_{XY}$ is positive if the $X-\mu_{X}E$ and $Y-\mu_{Y}E$ vectors 
+From this point of view, we can see that $\sigma_{XY}$ is positive if the $X-\mu_{X}E$ and $Y-\mu_{Y}E$ vectors
 "point roughly
 in the same direction" and its negative if they "point roughly in the opposite direction."
-
 
 ### Correlation
 
@@ -99,13 +92,13 @@ $$
 a \cdot b = \|a\|\|b\|\cos(\theta)
 $$
 
-where $\theta$ is the angle between $a$ and $b$.  So 
+where $\theta$ is the angle between $a$ and $b$.  So
 
 $$
 \cos(\theta) = \frac{a\cdot b}{\|a\|\|b\|}.
 $$
 
-Let's apply this to the variance and covariance, by noticing that 
+Let's apply this to the variance and covariance, by noticing that
 
 $$
 \frac{(X-\mu_{X}E)\cdot (Y-\mu_{Y}E)}{\|(X-\mu_{X}E)\|\|(Y-\mu_{Y}E)\|} = \frac{\sigma_{XY}}{\sigma_{XX}\sigma_{YY}}
@@ -123,9 +116,7 @@ measures the cosine of the angle between the vectors $X-\mu_{X}E$ and $Y-\mu_{Y}
 *correlation coefficient* between $X$ and $Y$.  We have $0\le |r_{XY}|\le 1$ with $r_{XY}=\pm 1$
 if and only if the two vectors $X-\mu_{X}$ and $Y-\mu_{Y}$ are collinear in $\mathbf{R}^{n}$.
 
-
 *@fig:corrfig illustrates data with different values of the correlation coefficient.
-
 
 ![Correlation](img/correlation.png){#fig:corrfig width=50%}
 
@@ -139,7 +130,6 @@ correspond to a person enrolled in a study, and the columns correspond
 to height (cm), weight (kg), systolic blood pressure, and age (in
 years):
 
-
 |sample | Ht | Wgt |Bp | Age|
 |----|-------:|-------:|--:|---:|
 | A   |  180   |  75    |110| 35 |
@@ -147,12 +137,11 @@ years):
 | ... | ...    | ...    |...|... |
 | U   | 150    |  92    |105| 55 |
 
-Table: A sample data matrix $X$ 
+Table: A sample data matrix $X$
 
 If we have multiple features, as in this example, we might be interested in the variance of each
 feature and all of their mutual covariances.  This "package" of information can be obtained "all at once"
 by taking advantage of some matrix algebra.
-
 
 **Definition:** Let $X$ be a $N\times k$ data matrix, where the $k$ columns of $X$ correspond to different features and
 the $N$ rows to different samples.  Let $X_{0}$ be the centered version of this data matrix, obtained by subtracting
@@ -162,7 +151,7 @@ $$
 D_{0} = \frac{1}{N}X_{0}^{\intercal}X_{0}
 $$
 
-is called the (sample) covariance matrix for the data. 
+is called the (sample) covariance matrix for the data.
 
 **Proposition:** The diagonal entries  $d_{ii}$ of $D_{0}$ are the variances
 of the columns of $X$:
@@ -188,15 +177,12 @@ for visualizing the covariance matrix of the data.  A density matrix plot is an 
 of plots (where $k$ is the number of features).  The  entry with $(i,j)$ coordinates in the grid is a scatter plot of the $i^{th}$
 feature against the $j^{th}$ one if $i\not=j$, and is a histogram of the $i^{th}$ variable if $i=j$.
 
-
 *@fig:density0 is an example of a density matrix plot for a dataset with $50$ samples and $2$ features.
 This data has been centered, so it can be represented
 in a $50\times 2$ data matrix $X_{0}$.  The upper left and lower right graphs are scatter plots
 of the two columns, while the lower left and upper right are the histograms of the columns.
 
-
 ![Density Matrix Plot](img/density2x2.png){#fig:density0 width=50%}
-
 
 ### Linear Combinations of Features (Scores)
 
@@ -204,7 +190,7 @@ Sometimes useful information about our data can be revealed if we combine differ
 together to obtain a "hybrid" measure that captures something interesting.  For example, in the Auto MPG
 dataset that we studied in the section on Linear Regression, we looked at the influence of both vehicle
 weight $w$ and engine displacement $e$ on gas mileage; perhaps their is some value in considering a hybrid
-"score" defined as 
+"score" defined as
 $$
 S = aw + be
 $$
@@ -212,22 +198,21 @@ for some constants $a$ and $b$ -- maybe by choosing a good combination we could 
 of gas mileage than using one or the other of the features individually.
 
 As another example, suppose we are interested in the impact of the nutritional content of food on
-weight gain in a study.  We know that both calorie content and the level 
+weight gain in a study.  We know that both calorie content and the level
 dietary fiber contribute to the weight gain of participants eating this particular food; maybe there is some
 kind of combined "calorie/fiber" score we could introduce that captures the impact of that food better.
 
 **Definition:** Let $X_{0}$ be a (centered) $N\times k$ data matrix  giving information about $k$ features for
 each of $N$ samples.  A linear synthetic feature, or a linear score, is a linear combination of the $k$ features.
 The linear score is defined by constants $a_{1},\ldots, a_{k}$ so that
-If $y_{1},\ldots, y_{k}$ are the values of the features for a particular sample, then the linear score 
-for that sample is 
+If $y_{1},\ldots, y_{k}$ are the values of the features for a particular sample, then the linear score
+for that sample is
 
 $$
 S = a_{1}y_{1}+a_{2}y_{2}+\cdots+a_{k}y_{k}
 $$
 
-
-**Lemma:** 
+**Lemma:**
 The values of the linear score for each of the $N$ samples can be calculated as
 
 $$
@@ -238,7 +223,6 @@ $${#eq:linearscore}
 
 **Proof:** Multiplying a matrix by a column vector computes a linear combination of the columns --
 that's what this lemma says. Exercise 3 asks you to write out the indices and make sure you believe this.
-
 
 ### Mean and variance of scores
 
@@ -264,7 +248,7 @@ where $\mu_{j}=0$ is the mean of the $j^{th}$ feature (column) of $X_{0}$.
 
 The variance is more interesting, and gives us an opportunity to put the covariance matrix to work.
 Remember from @eq:variancedot that, since a score $S$ has mean zero, it's variance is
-$\sigma_{S}^2=\frac{1}{N}S\cdot S$ -- where here the score $S$ is represented by the column vector with entries 
+$\sigma_{S}^2=\frac{1}{N}S\cdot S$ -- where here the score $S$ is represented by the column vector with entries
 $S_{1},\ldots S_{k}$ as in +@eq:linearscore.
 
 **Lemma:** The variance of the score $S$ with weights $a_1,\ldots a_k$ is
@@ -294,13 +278,12 @@ $$
 as claimed.
 
 For the covariance, use a similar argument with +@eq:covariancedot and +@eq:linearscore.
-writing $\sigma_{S_{1}S_{2}}=\frac{1}{N}S_{1}\cdot S_{2}$ and 
+writing $\sigma_{S_{1}S_{2}}=\frac{1}{N}S_{1}\cdot S_{2}$ and
 the fact that $S_{1}$ and $S_{2}$ can be written as $X_{0}a$ and $X_{0}b$.
 
 The point of this lemma is that the covariance matrix contains not just the variances and covariances
 of the original features, but also enough information to construct the variances and covariances
-for *any linear combination of features.* 
-
+for *any linear combination of features.*
 
 In the next section we will see how to exploit this
 idea to reveal hidden structure in our data.
@@ -308,18 +291,17 @@ idea to reveal hidden structure in our data.
 ### Geometry of Scores
 
 Let's return to the dataset that we looked at in +@sec:visualizecovar.  We simplify the density
-matrix plot in +@fig:pcasimfig, which shows one of the scatter plots 
-and the two histograms.   
+matrix plot in +@fig:pcasimfig, which shows one of the scatter plots
+and the two histograms.
 
 The scatter plot shows that the data points are arranged
 in a more or less elliptical cloud oriented at an angle to the $xy$-axes which represent the two given
 features.  The two individual histograms show the distribution of the two features -- each has mean zero,
 with the $x$-features distributed between $-2$ and $2$ and the $y$ feature between $-4$ and $4$.
-Looking just at the two features individually, meaning only at the two histograms, we can't see the 
+Looking just at the two features individually, meaning only at the two histograms, we can't see the
 overall elliptical structure.
 
 ![Simulated Data with Two Features](img/PCAsimulated-1.png){#fig:pcasimfig width=50%}
-
 
 How can we get a better grip on our data in this situation? We can try to find a "direction"
 in our data that better illuminates the variation of the data.   For example,
@@ -351,14 +333,14 @@ to our picture:
 ![Distribution of Z](img/PCAsimulated-4.png){#fig:pcasimfig-3 width=50%}
 
 This histogram shows the distribution of the values of $Z$ along the tilted line defined
-by the unit vector $u$. 
+by the unit vector $u$.
 
 Finally, using our work on the covariance matrix, we see that the
 variance of $Z$ is given by
 $$
 \sigma_{Z}^2 = \frac{1}{50}u^{\intercal}X_{0}^{\intercal}X_{0}u = u^{\intercal}D_{0}u
 $$
-where $D_{0}$ is the covariance matrix of the data $X_{0}$. 
+where $D_{0}$ is the covariance matrix of the data $X_{0}$.
 
 **Lemma:** Let $X_{0}$ be a $N\times k$ centered data matrix, and let $D_{0}=\frac{1}{N}X_{0}^{\intercal}X_{0}$
 be the associated covariance matrix.  Let $u$ be a unit vector in "feature space" $\mathbf{R}^{k}$.  Then
@@ -369,7 +351,6 @@ $$
 $$
 where $s_{i} = X_{0}[i,:]u$ is the dot product of the $i^{th}$ row $X_{0}[i,:]$ with $u$. It measures
 the variability in the data "in the direction of the unit vector $u$".
-
 
 ## Principal Components
 
@@ -397,14 +378,12 @@ As you can see, the variance goes through two full periods with the angle, and i
 minimum value at intervals of $\pi/2$ -- so the two angles where the variance are maximum and minimum
 are orthogonal to one another.
 
-
 ![Change of variance with angle theta](img/PCAtheta.png){#fig:pcatheta width=25%}
 
 The two directions where the variance is maximum and minimum are drawn on the original
 data scatter plot in +@fig:pcaprincipal .
 
 ![Data with principal directions](img/PCAprincipal.png){#fig:pcaprincipal width=25%}
-
 
 Let's try to understand why this is happening.
 
@@ -427,7 +406,7 @@ want to restrict $u$ to being a unit vector, with $u\cdot u =\sum u_{i}^2=1$.
 
 So this is a *constrained optimization problem*:
 
-- Find extreme values of the function 
+- Find extreme values of the function
 $$
 \sigma_{u}^{2} = u^{\intercal}D_{0}u
 $$
@@ -436,14 +415,13 @@ $$
 We will use the technique of *Lagrange Multipliers* to solve
 such a problem.  
 
-
 To apply this method, we introduce the function
 
 $$
 S(u, \lambda) = u^{\intercal}D_{0}u - \lambda(u\cdot u -1)
 $${#eq:lagrange}
 
-Then we compute the gradient 
+Then we compute the gradient
 
 $$
 \nabla S = \left[\begin{matrix} \frac{\partial S}{\partial u_{1}} \\ \vdots \\ \frac{\partial S}{\partial u_{k}} \\ \frac{\partial S}{\partial \lambda}\end{matrix}\right]
@@ -452,7 +430,7 @@ $${#eq:lagrangegradient}
 and solve the system of equations $\nabla S=0$.  Here we have written the gradient as a column vector for reasons that will become
 clearer shortly.
 
-Computing all of these partial derivatives looks messy, but actually if we take advantage of matrix algebra it's not too bad. 
+Computing all of these partial derivatives looks messy, but actually if we take advantage of matrix algebra it's not too bad.
 The following two lemmas explain how to do this.
 
 **Lemma**: Let $M$ be a $N\times k$ matrix with constant coefficients and let $u$ be a $k\times 1$ column vector whose entries are $u_1,\ldots u_{k}$.
@@ -461,7 +439,7 @@ same vector spaces, and satisfies
 $$
 D(F)(v) = Mv
 $$
-for any $k\times 1$ vector $v$.   If $u$ is a $1\times N$ matrix, and $G(u) = uM$, then 
+for any $k\times 1$ vector $v$.   If $u$ is a $1\times N$ matrix, and $G(u) = uM$, then
 $$
 D(G)(v) = vM
 $$
@@ -485,9 +463,8 @@ and so $D(F)=M$.
 
 The other result is proved the same way.
 
-
 **Lemma**:  Let $D$ be a symmetric $k\times k$ matrix with constant entries and let $u$ be an $k\times 1$ column vector of variables
-$u_{1},\ldots, u_{k}$.  Let $F:\mathbf{R}^{k}\to R$ be the function $F(u) = u^{\intercal}Du$.  Then the  gradient $\nabla_{u} F$ is a 
+$u_{1},\ldots, u_{k}$.  Let $F:\mathbf{R}^{k}\to R$ be the function $F(u) = u^{\intercal}Du$.  Then the  gradient $\nabla_{u} F$ is a
 vector field -- that is, a vector-valued function of $u$, and is given by the formula
 $$
 \nabla_{u} F = 2Du
@@ -503,13 +480,13 @@ $$
 $$
 Here the first sum catches all of the terms where the first "u" is $u_{i}$; and the second sum catches all
 the terms where the second "u" is $u_{i}$.  The diagonal terms $u_{i}^2d_{ii}$ contribute once to each sum,
-which is consistent with the rule that the derivative of $u_{i}^2d_{ii} = 2u_{i}d_{ii}$. 
-To finish the proof, notice that 
+which is consistent with the rule that the derivative of $u_{i}^2d_{ii} = 2u_{i}d_{ii}$.
+To finish the proof, notice that
 $$
-\sum_{j=1}^{k} u_{j}d_{ji} = \sum_{j=1}^{k} d_{ij}u_{j} 
+\sum_{j=1}^{k} u_{j}d_{ji} = \sum_{j=1}^{k} d_{ij}u_{j}
 $$
 since $D$ is symmetric, so in fact the two terms are the same
-Thus 
+Thus
 $$
 \df{u_{i}}F = 2\sum_{j=1}^{k} d_{ij}u_{j}
 $$
@@ -533,7 +510,7 @@ As we said in +@eq:lagrange:
 $$
 S(u,\lambda) = u^{\intercal}D_{0}u - \lambda(u\cdot u - 1) = u^{\intercal}D_{0}u -\lambda(u\cdot u) + \lambda
 $$
-Now apply our Matrix calculus lemmas.  First, let's treat $\lambda$ as a constant and focus on the $u$ variables.  We can write 
+Now apply our Matrix calculus lemmas.  First, let's treat $\lambda$ as a constant and focus on the $u$ variables.  We can write
 $u\cdot u = u^{\intercal} I_{N} u$ where $I_{N}$ is the identity matrix to compute:
 $$
 \nabla_{u} S = 2D_{0}u -2\lambda u
@@ -555,33 +532,33 @@ $$
 D_{0}u = \lambda u
 $$
 while the second says $u$ must be a unit vector $u\cdot u=\|u\|^2=1$.    The second part of the result follows from the fact that
-if $e_{i}$ is a unit eigenvector with eigenvalue $\lambda_{i}$ then 
+if $e_{i}$ is a unit eigenvector with eigenvalue $\lambda_{i}$ then
 $$
 \sigma_{e_{i}}^2 = e_{i}^{\intercal}D_{0}e_{i} = \lambda_{i}\|e_{i}\|^2=\lambda_{i}.
 $$
 
-To really make this result pay off, we need to recall some key facts about the eigenvalues and 
+To really make this result pay off, we need to recall some key facts about the eigenvalues and
 eigenvectors of symmetric matrices.  Because these facts are so central to this result, and
 to other applications throughout machine learning and mathematics generally, we provide
 proofs in +@sec:spectraltheorem.
 
 ---
 
------------------------------------------------------------------------
-Summary                                                                
------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+Summary
+----------------------------------------------------------------------------------------------
 1. All of the eigenvalues $\lambda_{1},\ldots, \lambda_{l}$ of  $D$ are real.
 If $u^{\intercal}Du\ge 0$ for all $u\in\mathbf{R}^{k}$, then all eigenvalues $\lambda_{i}$ are non-negative.  In the latter case we say that $D$ is *positive semi-definite.*
 
-2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue 
+2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue
 $\lambda'$, then $v$ and $w$ are orthogonal: $v\cdot w = 0$.
 
-3. There is an orthonormal basis $u_{1},\ldots, u_{k}$  of $\mathbf{R}^{k}$ made up of eigenvectors of 
+3. There is an orthonormal basis $u_{1},\ldots, u_{k}$  of $\mathbf{R}^{k}$ made up of eigenvectors of
 $D$ corresponding to the eigenvalues $\lambda_{i}$.
 
-4. Let $\Lambda$ be the diagonal matrix with entries $\lambda_{1},\ldots, \lambda_{N}$ and let $P$ 
+4. Let $\Lambda$ be the diagonal matrix with entries $\lambda_{1},\ldots, \lambda_{N}$ and let $P$
 be the matrix whose columns are made up of the vectors $u_{i}$.  Then $D = P\Lambda P^{\intercal}.$
-------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 Table: Properties of Eigenvalues of Real Symmetric Matrices {#tbl:symmmat}
 
@@ -612,11 +589,10 @@ occurs more than once, there may be a whole subspace of directions where the var
 
 ### Subspaces of extremal variance {#sec:subspaces}
 
-
 We can generalize the idea of the variance of our data in a particular direction to a higher dimensional version of *total variance* in a subspace.
 Suppose that  $E$ is a subspace of $\mathbf{R}^{k}$ and $U$ is a matrix whose columns span $E$ -- the columns of $U$ are
 the weights of a family of scores that span $E$.  The values of these scores are $XU$ and the covariance matrix of this projected data
-is 
+is
 $$\frac{1}{N}U^{\intercal}X^{\intercal}XU=U^{\intercal}D_{0}U.$$.
 
 Finally, the *total variance* $\sigma_{E}^2$ of the data projected into $E$ is the sum of the diagonal entries of the matrix
@@ -638,7 +614,7 @@ Complete this to a basis $w_{1},\ldots, w_{t},w_{t+1},\ldots, w_{k}$ of $\mathbf
 (see +@sec:gsprocess) to find an orthonormal basis $w'_{1},\ldots,w'_{s},w'_{s+1},\ldots, w'_{k}$ where the $w'_{1},\ldots, w'_{t}$
 are an orthonormal basis for $E$.  Let $W$ be the $k\times t$ matrix whose columns are the $w'_{i}$ for $i=1,\ldots,t$.  The
 rows of the matrix $X_{0}W$ given the coordinates of the projection of each sample into the subspace $E$ expressed in terms
-of the scores corresponding to these vectors $w'_{i}$.  The total variance of these projections is 
+of the scores corresponding to these vectors $w'_{i}$.  The total variance of these projections is
 
 $$
 \sigma_{E}^2 = \sum_{i=1}^{t} \|X_{0}w'_{i}\|^2 = \sum_{i=1}^{t} (w'_{i})^{\intercal}X_{0}^{\intercal}X_{0}w'_{i}  = \sum_{i=1}^{t} (w'_{i})^{\intercal}D_{0}w'_{i}
@@ -675,7 +651,7 @@ D_{0}W &= W\Lambda \\
 W^{\intercal}W &= I \\
 \end{align*}
 
-The first of these equations says that the space $E$ spanned by the columns of $W$ is *invariant* under $D_{0}$, while the second says that the 
+The first of these equations says that the space $E$ spanned by the columns of $W$ is *invariant* under $D_{0}$, while the second says that the
 columns of $W$ form an orthonormal basis.  
 
 Let's assume for the moment that we have a matrix $W$ that satisfies these conditions.  
@@ -687,7 +663,7 @@ and the matrix on the left is symmetric.
 
 By the properties of real symmetric matrices (the spectral theorem), there are orthonormal
 vectors $q_{1},\ldots q_{t}$ that are eigenvectors of $\Lambda$ with corresponding eigenvalues $\tau_{i}$.
-If we let $Q$ be the matrix whose columns are the vectors $q_{i}$ and let $T$ be the diagonal $t\times t$ matrix whose entries are the $\tau_{i}$, we have 
+If we let $Q$ be the matrix whose columns are the vectors $q_{i}$ and let $T$ be the diagonal $t\times t$ matrix whose entries are the $\tau_{i}$, we have
 $$
 \Lambda Q = QT.
 $$
@@ -700,10 +676,10 @@ $$
 In other words,
 $WQ$ is a matrix whose columns are eigenvectors of $D_{0}$ with eigenvalues $\tau_{i}$ for $i=1,\ldots, t$.
 
-Thus we see how to construct an invariant subspace $E$ and a solution matrix $W$. 
+Thus we see how to construct an invariant subspace $E$ and a solution matrix $W$.
 Such an  $E$ is spanned by $t$ orthonormal eigenvectors $q_{i}$
 with eigenvalues $\tau_{i}$
-of $D_{0}$; and $W$ is is the matrix  whose columns are the $q_{i}$. Further, in that case, 
+of $D_{0}$; and $W$ is is the matrix  whose columns are the $q_{i}$. Further, in that case,
 the total variance associated to $E$ is the sum of the eigenvalues $\tau_{i}$; to make this as large as possible, we should choose our eigenvectors
 to correspond to $t$ of the largest eigenvalues of $D_{0}$. This concludes the proof.
 
@@ -712,16 +688,15 @@ to correspond to $t$ of the largest eigenvalues of $D_{0}$. This concludes the p
 **Definition:** The orthonormal unit eigenvectors $u_{i}$ for $D_{0}$ are the *principal directions* or *principal components* for the data $X_{0}$.  
 
 **Theorem:** The maximum
-variance occurs in the principal direction(s) associated to the largest eigenvalue, and the minimum variance in the principal direction(s) associated with the smallest one. The covariance between scores in  principal directions associatedwith different eigenvalues is zero. 
+variance occurs in the principal direction(s) associated to the largest eigenvalue, and the minimum variance in the principal direction(s) associated with the smallest one. The covariance between scores in  principal directions associatedwith different eigenvalues is zero.
 
 At this point, the picture in +@fig:pcaprincipal makes sense -- the red and green dashed lines are the principal directions,
 they are orthogonal to one another, and the point in the directions where the data is most (and least) "spread out."
 
 **Proof:** The statement about the largest and smallest eigenvalues is proved at the very end of the last section.
-The covariance of two scores corresponding to different eigenvectors $u_{i}$ and $u_{j}$ is 
+The covariance of two scores corresponding to different eigenvectors $u_{i}$ and $u_{j}$ is
 $$u_{i}^{\intercal}D_{0}u_{j} = \lambda_{j}(u_{i}\cdot u_{j}) = 0$$ since the $u_{i}$ and $u_{j}$ are
 orthogonal.
-
 
 Sometimes the results above are presented in a slightly different form, and may be referred to, in part, as Rayleigh's theorem.
 
@@ -734,21 +709,19 @@ is the least eigenvalue).
 
 **Proof:** The maximum of the function $H(v)$ is the solution to the same optimization problem that we considered above.
 
-
 **Exercises.**
 
 1. Prove that the two expressions for $\sigma_{X}^2$ given in +@eq:variance are the same.
 
 2. Prove that the covariance matrix is as described in the proposition in  @sec:covarmat.
 
-3.  Let $X_{0}$  be a $k\times N$ matrix with entries $x_{ij}$ for $1\le i\le k$ and $1\le j\le N$.
+3. Let $X_{0}$  be a $k\times N$ matrix with entries $x_{ij}$ for $1\le i\le k$ and $1\le j\le N$.
 If a linear score is defined by the constants $a_{1},\ldots a_{N}$, check that equation
 +@eq:linearscore holds as claimed.
 
-4.  Why is it important to use a unit vector when computing the variance of $X_{0}$ in the direction
+4. Why is it important to use a unit vector when computing the variance of $X_{0}$ in the direction
 of $u$?  Suppose $v=\lambda u$ where $u$ is a unit vector and $\lambda>0$ is a constant.  Let
 $S'$ be the score $X_{0}v$.  How is the variance of $S'$ related to that of $S=X_{0}u$?
-
 
 ## Dimensionality Reduction via Principal Components
 
@@ -756,10 +729,10 @@ The principal components associated with a dataset separate out directions in th
 in which the data is most (or least) variable.  One of the main applications of this information
 is to enable us to take data with a great many features -- a set of points in a high dimensional
 space -- and, by focusing  our attention on the scores corresponding to the principal directions,
-capture most of the information in the data in a much lower dimensional setting. 
+capture most of the information in the data in a much lower dimensional setting.
 
 To illustrate how this is done, let $X$ be a $N\times k$ data matrix, let $X_{0}$ be its centered
-version, and let $D_{0} = \frac{1}{N}X_{0}^{\intercal}X$ be the associated covariance matrix. 
+version, and let $D_{0} = \frac{1}{N}X_{0}^{\intercal}X$ be the associated covariance matrix.
 
 Apply the spectral theorem (described in +@tbl:symmmat) and proved in +@sec:spectraltheorem
 to the covariance matrix to obtain eigenvalues $\lambda_{1}\ge \lambda_{2}\ge\cdots \lambda_{k}\ge 0$
@@ -772,8 +745,10 @@ the most significant variability in the original data, we can learn a lot about 
 considering just these $t$ features of the data, instead of needing all $N$.  
 
 To illustrate, let's look at an example.  We begin with a synthetic dataset $X_{0}$ which has
-$200$ samples and $15$ features.  The data (some of it) for some of the samples is shown in 
-+@tbl:rawdata. 
+$200$ samples and $15$ features.  The data (some of it) for some of the samples is shown in
++@tbl:rawdata.
+
+---
 
           f-0      f-1       f-2      f-3      f-4      \... f-10     f-11     f-12     f-13     f-14
   ------- -------- --------- -------- -------- -------- ---- -------- -------- -------- -------- --------
@@ -785,13 +760,15 @@ $200$ samples and $15$ features.  The data (some of it) for some of the samples 
 
 Table: Simulated Data for PCA Analysis {#tbl:rawdata}
 
+---
+
 The full dataset is a  $200\times 15$ matrix;
 it has $3000$ numbers in it and we're not really equipped to make sense of it.  We could try
-some graphing -- for example, +@fig:features shows a scatter plot of two of the features plotted against each other. 
+some graphing -- for example, +@fig:features shows a scatter plot of two of the features plotted against each other.
 
 ![Scatter Plot of Two Features](img/features.png){#fig:features width=50%}
 
-Unfortunately there's not much to see in  +@fig:features -- just a blob -- because the individual features of the data 
+Unfortunately there's not much to see in  +@fig:features -- just a blob -- because the individual features of the data
 don't tell us much in isolation, whatever structure there is in this data arises out of the relationship
 between different features.
 
@@ -801,7 +778,6 @@ positions, where in position $i,i$ we plot a histogram of column $i$.  There's n
 visible; it is a lot of blobs.
 
 ![Density Grid Plot of All Features](img/density.png){#fig:densitygrid width=50%}
-
 
 So let's apply the theory of principal components.  We use a software package to compute the eigenvalues
 and eigenvectors of the matrix $D_{0}$.  The $15$  eigenvalues $\lambda_{1}\ge \cdots \ge \lambda_{15}$
@@ -830,7 +806,7 @@ five clusters, distinguished by the values of their scores!  This ability to fin
 data, is one of the most important applications of principal components.
 
 If we were dealing with real data, we would now want to investigate the different groups of points to see
-if we can understand what characteristics the principal components have identified. 
+if we can understand what characteristics the principal components have identified.
 
 ### Loadings
 
@@ -842,9 +818,8 @@ distribution of the points in that plane.
 
 More generally, suppose we take our dataset $X_{0}$ and consider the first $t$ principal components corresponding
 to the eigenvectors $u_{1},\ldots, u_{t}$.  The projection of the data into the space spanned by these eigenvectors
-is the represented by the $S = k\times t$ matrix $X_{0}U$ where $U$ is the $k\times t$ matrix whose columns are the eigenvectors $u_{i}$. 
-Each row of $S$ gives the values of the score arising from $u_{i}$ in the $i^{th}$ column for $i=1,\ldots, t$. 
-
+is the represented by the $S = k\times t$ matrix $X_{0}U$ where $U$ is the $k\times t$ matrix whose columns are the eigenvectors $u_{i}$.
+Each row of $S$ gives the values of the score arising from $u_{i}$ in the $i^{th}$ column for $i=1,\ldots, t$.
 
 The remaining question that we wish to consider is: how can we see some evidence of the original features in subspace?
 We can answer this by imagining that we had an artificial sample $x$ that has a measurement of $1$ for the $i^{th}$
@@ -862,66 +837,70 @@ plot have larger values of feature $6$.
 
 ![Loadings in the Principal Component Plane](img/loading.png){#fig:loadings width=50%}
 
-
 In the next, and last, section, of this discussion of Principal Component Analysis, we will give proofs
 of the key mathematical ideas summarized earlier in +@tbl:symmmat, which have been central to this analysis.
 
 ### The singular value decomposition {#sec:svd}
 
-The singular value decomposition is a slightly different way of looking at principal components.  Let
-$\Lambda$ be the diagonal matrix of eigenvalues of $D_{0}$; we know that the entries of $D_{0}$ are non-negative.
-Let's drop the eigenvectors corresponding to the zero eigenvalue.  Let's say that  there are $s$ non-zero eigenvalues,
-and $s$ corresponding eigenvectors.  
-
-**Lemma:** Let $P'$ be the $N\times s$ matrix whose columns are the eigenvectors with non-zero eigenvalues,
-and let $\Lambda_{+}$ be the $s\times s$ diagonal matrix whose entries are the non-zero eigenvalues.  Then
-$P'\Lambda_{+} P'^{\intercal} = P\Lambda P^{\intercal} = D_{0}$.
-
-**Proof:** First observe that $P'\Lambda_{+}P'^{\intercal}$ is in fact an $N\times N$ matrix.  Then look at the block
-structure to verify the result.
-
-The matrix $\Lambda_{+}$ is diagonal, invertible, and, since the eigenvalues are positive, it makes sense to consider
-the real matrix $\Lambda_{+}^{1/2}$ whose entries are the square roots of the eigenvalues.
-
-Let $U = X_{0}P'\Lambda_{+}^{-1/2}$. Note that $U$ is a $k\times s$ dimensional matrix.
-
-**Lemma:** The columns of $U$ are orthonormal.
-
-**Proof:**  Compute the $s\times s$ matrix $U^{\intercal}U$, whose entries are all of the dot products
-of the columns of $U$:
+The singular value decomposition is a slightly more detailed way of looking at principal components.  Let
+$\Lambda$ be the diagonal matrix of eigenvalues of $D_{0}$ and let $P$ be the $k\times k$ orthogonal
+matrix whose columns are the principal components.  Then we have
 $$
-\begin{aligned}
-U^{\intercal}U &=& \Lambda_{+}^{-1/2}P'^{\intercal}X_{0}^{\intercal}X_{0}P'\Lambda_{+}^{-1/2} \\
-&=& \Lambda_{+}^{-1/2}P'^{\intercal}P'\Lambda_{+}P'^{\intercal}P'\Lambda_{+}^{-1/2} \\
-&=& I_{s} \\
-\end{aligned}
+D_{0} =\frac{1}{N}X_{0}^{\intercal}X_{0}= P\Lambda P^{\intercal}.
 $$
-by the previous lemma and the fact that $P'P'^{\intercal}$ is the $s\times s$ identity matrix.
-
-Rearranging this yields the singular value decomposition.
-
-**Theorem:** (The singular value decomposition) The matrix $X_{0}$ has a decomposition:
+Consider the $N\times k$ matrix
 $$
-X_{0} = U\Lambda_{+}^{-1/2}P'^{\intercal}
+X_{0}P = A.
 $$
-where $U$ (of dimension $k\times s$) and $P'$ (of dimension $N\times s$)  are orthogonal, and $\Lambda_{+}$
-(of dimension $s\times s$) is diagonal with positive entries.  Furthermore,
-the entries of $\Lambda_{+}$ are the non-negative eigenvalues of $D_{0}=X_{0}^{\intercal}X_{0}$, and
-$U$ and $P'$ are uniquely determined by $X_{0}$.
 
-**Proof:** We won't work through all of this, as it is a reinterpretation of our work on principal components.
+As we saw in the previous section, the columns of $A$ give the projection of the data into
+the $k$ principal directions. 
+Then
 
-**Remark:** The entries of $\Lambda_{+}^{-1/2}$ are called the  singular values of $X_{0}$.  They can be found
-directly by considering the optimization problem implicitly equivalent to the problem we solved in 
-+@sec:subspaces.
+$$A^{\intercal}A=P^{\intercal}X_{0}^{\intercal}X_{0}P=N\Lambda.$$
 
+In other words,
+the columns of $A$ are orthogonal and the diagonal entries of $A^{\intercal}A$
+are $N$ times the variance of the data in the various principal directions.
+
+Now we are going to tinker with the matrix $A$ in order to make an $N\times N$ orthogonal matrix.
+The first modification we make is to normalize the columns of $A$ so that they have length $1$.
+We do this by setting
+$$
+A_{1} = A(N\Lambda)^{-1/2}.
+$$
+Then $A_{1}^{\intercal}A_{1}$ is the identity, so the columns of $A_{1}$ are orthonormal. Here we
+are assuming that the eigenvalues of $D_{0}$ are nonzero -- this isn't strictly necessary, and we could
+work around this, but for simplicity we will assume it's true.  It amounts to the assumption that the
+independent variables are not linearly related, as we've seen before.
+
+The second modification is to extend $A_{1}$ to an $N\times N$ matrix.
+The $k$ columns of $A_1$ span only a $k$-dimensional subspace of the $N$-dimensional space where the feature
+vectors lie.  
+Complete the subspace by finding an orthogonal complement to it -- that is, find $N-k$ mutually orthogonal
+unit vectors all orthogonal to the column space of $A_1$.  By adding these vectors to $A$ as columns,
+create an extended $N\times N$ matrix $\tilde{A}_1$ which is orthogonal.
+
+Notice that
+$\tilde{A}_{1}^{\intercal}A$ is an $N\times k$ matrix whose upper $k\times k$ block is $(N\Lambda)^{1/2}$
+and whose final $N-k$ rows are all zero.  We call this matrix $\tilde{\Lambda}$.
+
+To maintain consistency with the traditional formulation, we let $U=\tilde{A}_{1}^{\intercal}$ and
+then we have the following proposition. 
+
+**Proposition:** We have a factorization
+$$
+X_{0} = U\tilde{\Lambda}P^{T}
+$$ {#eq:svd}
+where $U$ and $P$ are orthogonal matrices of size $N\times N$ and $k\times k$ respectively, and $\tilde{\Lambda}$
+is an $N\times k$ diagonal matrix. This is called the "singular value decomposition" of $X_{0}$,
+and the entries of $\tilde{\Lambda}$ are called the singular values.
 
 ## Eigenvalues and Eigenvectors of Real Symmetric Matrices (The Spectral Theorem) {#sec:spectraltheorem}
 
 Now that we've shown how to apply the theory of eigenvalues and eigenvectors of symmetric matrices
-to extract principal directions from data, and to use those principal directions to find structure, 
+to extract principal directions from data, and to use those principal directions to find structure,
 we will give a proof of the properties that we summarized in +@tbl:symmmat.
-
 
 A key tool in the proof is the Gram-Schmidt
 orthogonalization process.
@@ -933,11 +912,11 @@ in $\mathbf{R}^{N}$ and let $W$ be the span of the $w_{i}$.  Let $u_{1} = w_{1}$
 $$
 u_{i} = w_{i} - \sum_{j=1}^{i-1} \frac{w_{i}\cdot u_{j}}{u_{j}\cdot u_{j}}u_{j}
 $$
-for $i=2,\ldots, k$.  Then 
+for $i=2,\ldots, k$.  Then
 
 - The vectors $u_{i}$ are orthogonal: $u_{i}\cdot u_{j}=0$ unless $i=j$.
 - The vectors $u_{i}$ span $W$.
-- Each $u_{i}$ is orthogonal to the all of $w_{1},\ldots, w_{i-1}$. 
+- Each $u_{i}$ is orthogonal to the all of $w_{1},\ldots, w_{i-1}$.
 - The vectors $u'_{i} = u_{i}/\|u_{i}\|$ are orthonormal.
 
 **Proof:** This is an inductive exercise, and we leave it to you to work out the details.
@@ -946,17 +925,17 @@ for $i=2,\ldots, k$.  Then
 
 **Theorem:** Let $D$ be a real symmetric $N\times N$ matrix.  Then:
 
-1. All of the $N$ eigenvalues $\lambda_1\ge \lambda_2\ge \cdots \ge \lambda_{N}$ are real.  If 
+1. All of the $N$ eigenvalues $\lambda_1\ge \lambda_2\ge \cdots \ge \lambda_{N}$ are real.  If
 $u^{\intercal}Du\ge 0$ for all $u\in\mathbf{R}^{N}$, then all eigenvalues $\lambda_{i}\ge 0$.
 2. The matrix $D$ is diagonalizable -- that is, it has $N$ linearly independent eigenvectors.
 3. If $v$ and $w$ are eigenvectors corresponding to eigenvalues $\lambda$ and $\lambda'$, with $\lambda\not=\lambda'$,
 then $v$ and $w$ are orthogonal: $v\cdot w=0$.
 4. There is an orthonormal basis $u_{1},\ldots, u_{N}$ of $\mathbf{R}^{N}$ made up of eigenvectors for the eigenvalues
-$\lambda_{i}$. 
+$\lambda_{i}$.
 5. Let $\Lambda$ be the diagonal matrix with entries $\lambda_{1},\ldots, \lambda_{N}$ and let $P$ be the matrix
 whose columns are made up of the eigenvectors $u_{i}$.  Then $D=P\Lambda P^{\intercal}$.
 
-**Proof:** Start with $1$. 
+**Proof:** Start with $1$.
 Suppose that $\lambda$ is an eigenvalue of
 $D$.  Let $u$ be a corresponding nonzero eigenvector.  Then
 $Du=\lambda u$ and $D\overline{u}=\overline{\lambda}\overline{u}$, where $\overline{u}$ is the
@@ -976,20 +955,19 @@ is real.
 If we have the additional property that $u^{\intercal}Du\ge 0$ for all $u$, then in particular
 $u_{i}^{\intercal}Du_{i} = \lambda\|u\|^2\ge 0$, and since $\|u\|^2> 0$ we must have $\lambda\ge 0$.
 
-
 Property $2$ is in some ways the most critical fact. We know from the
 general theory of the characteristic polynomial, and the fundamental
 theorem of algebra, that $D$ has $N$ complex eigenvalues, although
 some may be repeated.  However, it may not be the case that $D$ has $N$ linearly
 independent eigenvectors -- it may not be *diagonalizable*.  So we will establish that now.
 
-A one-by-one matrix is automatically symmetric and diagonalizable.  In the $N$-dimensional case, 
+A one-by-one matrix is automatically symmetric and diagonalizable.  In the $N$-dimensional case,
 we know, at least, that $D$ has at least one eigenvector, and real one at that by part $1$,
 and this gives us a place to begin an inductive argument.  
 
 Let $v_{N}\not=0$ be an eigenvector with eigenvalue $\lambda$ and normalized so that $\|v_{N}\|^2=1$,  
 and extend this to a basis $v_{1},\ldots v_{N}$ of $\mathbf{R}^{N}$.
-Apply the Gram-Schmidt process  to construct an orthonormal basis of $\mathbf{R}^{N}$ 
+Apply the Gram-Schmidt process  to construct an orthonormal basis of $\mathbf{R}^{N}$
 $u_{1},\ldots, u_{N}$ so that $u_{N}=v_{N}$.  
 
 Any vector $v\in\mathbf{R}^{N}$ is a linear combination
@@ -1005,7 +983,7 @@ $$
 Du_{i} = \sum_{j=1}^{N} d'_{ij} u_{j}
 $$
 
-and so 
+and so
 
 $$
 d'_{ij} = u_{j}\cdot Du_{i} = u_{j}^{\intercal}Du_{i}.
@@ -1023,20 +1001,19 @@ $d'_{iN}=0$ unless $i=N$, and $d'_{NN}=\lambda$.
 
 In other words, the matrix $D'$ has a block form:
 $$
-D' = \left(\begin{matrix} * & * & \cdots &*  & 0 \\ \vdots & \vdots & \ddots   & \vdots & \vdots \\
-* & * & \cdots &*  & 0 \\
+D' = \left(\begin{matrix} *&* & \cdots &*  & 0 \\ \vdots & \vdots & \ddots   & \vdots & \vdots \\
+* & *& \cdots &*  & 0 \\
 0 & 0 & \cdots &0 &\lambda \end{matrix}\right)
 $$
-and the block denoted by $*$'s is symmetric.  If we call that block $D_{*}$, 
+and the block denoted by $*$'s is symmetric.  If we call that block $D_{*}$,
 the inductive hypothesis tells us that the symmetric matrix $D_{*}$ is diagonalizable, so it has a basis of
 eigenvectors $u'_{1},\ldots, u'_{N-1}$ with eigenvalues $\lambda_{1},\ldots, \lambda_{N-1}$; this gives
 us a basis for the subspace of $\mathbf{R}^{N}$ spanned by $u_{1},\ldots, u_{N-1}$ which, together
 with $u_{N}$ gives us a basis of $\mathbf{R}^{N}$ consisting of eigenvectors of $D$.
 
-
 This finishes the proof of Property $2$.
 
-For property $3$, compute 
+For property $3$, compute
 $$
 v^{\intercal}Dw = \lambda'(v\cdot w)=w^{\intercal}Dv = \lambda (w\cdot v).
 $$
@@ -1049,7 +1026,7 @@ you have $r$ linearly independent vectors $u_{1},\ldots, u_{r}$ that span the $\
 The Gram-Schmidt process allows you to construct an orthonormal set that spans this eigenspace, and while
 this orthonormal set isn't unique, any one of them will do.
 
-For property $5$, let $e_{i}$ be the column vector that is zero except for a $1$ in position $i$. 
+For property $5$, let $e_{i}$ be the column vector that is zero except for a $1$ in position $i$.
 The product $e_{j}^{\intercal}De_{i}=d_{ij}$.  Let's write $e_{i}$ and $e_{j}$ in terms of the orthonormal
 basis $u_{1},\ldots u_{N}$:
 $$
@@ -1067,7 +1044,7 @@ On the other hand,
 $$
 P^{\intercal}e_{i} = \left[\begin{matrix} (e_{i}\cdot u_{1})\\ (e_{i}\cdot u_{2})\\ \vdots \\(e_{i}\cdot u_{N})\end{matrix}\right]
 $$
-and 
+and
 $$
 \Lambda P^{\intercal}e_{i} = \left[\begin{matrix} \lambda_{1}(e_{i}\cdot u_{i})\\ \lambda_{2}(e_{i}\cdot u_{2})\\ \vdots \\ \lambda_{N}(e_{i}\cdot u_{N})\end{matrix}\right]
 $$
@@ -1082,6 +1059,3 @@ so the two matrices $D$ and $P\Lambda P^{\intercal}$ are in fact equal.
 1. Prove the rest of the first lemma in +@sec:svd.
 
 2. Prove the Gram-Schmidt Process has the claimed properties in +@sec:gsprocess.
-
-
-
