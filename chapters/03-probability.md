@@ -1068,12 +1068,11 @@ deviation of the $i^{th}$ feature, and we replace our response variables $y_i$ s
 Then we find $M$ using equation @eq:ridgeformula, perhaps experimenting with different values of $\lambda$, using our centered and standardized variables. 
 
 Recall that the matrix $D=X^{\intercal}X$
-that enters into @eq:ridgeformula is the covariance matrix, then in Ridge regression we have replaced $D$ by $D+\lambda$.
+that enters into @eq:ridgeformula is the covariance matrix.  Therefore in ridge regression we have replaced $D$ by $D+\lambda$.
 Since $D$ is a real symmetric matrix, as we've seen in Chapter 2 it is diagonalizable so that $ADA^{-1}$ is diagonal for
 an orthogonal matrix $A$ and has eigenvalues $\lambda_1\ge \ldots\ge \lambda_k$.  The *condition number* of $D$ is the ratio $\lambda_1/\lambda_k$ of the largest to the smallest
 eigenvalue.
 
 If the condition number of a matrix  is large, then results from numerical analysis show that it is *almost singular* and its inverse becomes very sensitive
 to small changes in the entries of the matrix.  However, the eigenvalues of $D+\lambda$ are $\lambda_{i}+\lambda$ and so the condition number becomes $(\lambda_1+\lambda)/(\lambda_k+\lambda)$.
-For larger values of $\lambda$, this condition number shrinks, and so the inverse of the matrix $D$ becomes better behaved.  In this way, ridge regression helps to 
-improve the numerical stability of the linear regression algorithm.
+For larger values of $\lambda$, this condition number shrinks, and so the inverse of the matrix $D$ becomes better behaved.  In this way, ridge regression helps to improve the numerical stability of the linear regression algorithm.
