@@ -4,7 +4,6 @@ OPTIONS = -N --standalone --mathjax --toc --top-level-division=chapter
 METADATA = --metadata-file metadata.yml
 OUTPUT = -o build.pdf
 
-
 book: build.pdf
 
 build.pdf : $(CHAPTERS)

@@ -1052,5 +1052,28 @@ $$
 $${#eq:ridgeformula}
 where $\lambda=\sigma^2/\tau^2$.
 
-In practice, we view $\lambda$ as an adjustable parameter and the problem of solving @eq:ridgeformula
-is called "ridge regression."
+#### Practical aspects of ridge regression
+
+Using ridge regression leads to a solution to the least squares problem in which the regression coefficients
+are biased towards being smaller.  Beyond this, there are a number of implications of the technique which
+affect its use in practice.
+
+First, we can put the Bayesian derivation of the ridge regression formulae in the background and focus our attention
+on @eq:ridgeformula.  We can treat the  parameter $\lambda$ (which must be non-negative) as "adjustable".  
+
+One important consideration when using ridge regression is that @eq:ridgeformula is not invariant if we scale $X$ and $Y$ by a constant.  This is different from "plain"
+regression where we consider the equation $Y=XM$.  In that case, rescaling $X$ and $Y$ by the same factor leaves the coefficients $M$ alone.  For this reason, ridge regression
+is typically used on centered, standardized coordinates.  In other words, we replace each feature $x_i$ by $(x_i-\mu_i)/\sigma_i$ where $\mu_i$ and $\sigma_i$ are the sample mean and standard
+deviation of the $i^{th}$ feature, and we replace our response variables $y_i$ similarly by $(y-\mu)/\sigma$ where $\mu$ and $\sigma$ are the mean and standard deviation of the $y$-values.
+Then we find $M$ using equation @eq:ridgeformula, perhaps experimenting with different values of $\lambda$, using our centered and standardized variables. 
+
+Recall that the matrix $D=X^{\intercal}X$
+that enters into @eq:ridgeformula is the covariance matrix, then in Ridge regression we have replaced $D$ by $D+\lambda$.
+Since $D$ is a real symmetric matrix, as we've seen in Chapter 2 it is diagonalizable so that $ADA^{-1}$ is diagonal for
+an orthogonal matrix $A$ and has eigenvalues $\lambda_1\ge \ldots\ge \lambda_k$.  The *condition number* of $D$ is the ratio $\lambda_1/\lambda_k$ of the largest to the smallest
+eigenvalue.
+
+If the condition number of a matrix  is large, then results from numerical analysis show that it is *almost singular* and its inverse becomes very sensitive
+to small changes in the entries of the matrix.  However, the eigenvalues of $D+\lambda$ are $\lambda_{i}+\lambda$ and so the condition number becomes $(\lambda_1+\lambda)/(\lambda_k+\lambda)$.
+For larger values of $\lambda$, this condition number shrinks, and so the inverse of the matrix $D$ becomes better behaved.  In this way, ridge regression helps to 
+improve the numerical stability of the linear regression algorithm.
