@@ -837,8 +837,6 @@ plot have larger values of feature $6$.
 
 ![Loadings in the Principal Component Plane](img/loading.png){#fig:loadings width=50%}
 
-In the next, and last, section, of this discussion of Principal Component Analysis, we will give proofs
-of the key mathematical ideas summarized earlier in +@tbl:symmmat, which have been central to this analysis.
 
 ### The singular value decomposition {#sec:svd}
 
@@ -890,11 +888,68 @@ then we have the following proposition.
 
 **Proposition:** We have a factorization
 $$
-X_{0} = U\tilde{\Lambda}P^{T}
+X_{0} = U\tilde{\Lambda}P^{\intercal}
 $$ {#eq:svd}
 where $U$ and $P$ are orthogonal matrices of size $N\times N$ and $k\times k$ respectively, and $\tilde{\Lambda}$
 is an $N\times k$ diagonal matrix. This is called the "singular value decomposition" of $X_{0}$,
 and the entries of $\tilde{\Lambda}$ are called the singular values.
+
+## Linear Regression, Singular Values, and PCA {#sec:lrsvpca}
+
+In this section we take a slight detour and apply what we've learned about the covariance matrix,
+principal components, and the singular value decomposition to the original problem of linear regression that
+we studied in Chapter 1.  
+
+In this setting, in addition to our centered data matrix $X_{0}$, we have a vector $Y$ of target
+values and we find the "best" approximation
+$$
+\hat{Y} = X_{0}M
+$$
+using the least squares method.  As we showed in Chapter 1, the optimum $M$ is found as
+$$
+M = (X_{0}^{\intercal}X_{0})^{-1}X^{\intercal}Y = ND_{0}^{-1}X_0^{\intercal}Y
+$$
+and the predicted values $\hat{Y}$ are
+$$
+\hat{Y} = NX_{0}D_{0}^{-1}X_0^{\intercal}Y.
+$$
+
+Geometrically, we understood this process as defining $\hat{Y}$ to be the orthogonal projection of $Y$ into the subspace spanned by the columns of $X_{0}$.
+
+Let's use the decomposition (see @eq:svd ) $X_{0}=U\tilde{\Lambda}P^{\intercal}$ in this formula. First, notice that 
+$$
+X_{0}^{\intercal}X_{0}= P\tilde{\Lambda}^{\intercal}U^{\intercal}U\tilde{\Lambda}P^{\intercal} = P\tilde{\Lambda}^{\intercal}\tilde{\Lambda}P^{\intercal}.
+$$
+
+The middle term $\tilde{\Lambda}^{\intercal}\tilde{\Lambda}$ is the $k\times k$ matrix $\Lambda$ whose diagonal entries
+are $N\lambda_{i}$ where $\lambda_{i}$ are the eigenvalues of the covariance matrix $D_{0}$. Assuming
+these are all nonzero (which is tantamount to the assumption that the covariance matrix is invertible),
+we obtain
+$$
+\hat{Y} = NU\tilde{\Lambda}P^{\intercal}P\Lambda^{-1}P^{\intercal}P\tilde{\Lambda}^{\intercal}U^{\intercal}Y.
+$$
+There is a lot of cancellation here, and in the end what's left is
+$$
+\hat{Y}=UEU^{\intercal}Y
+$$
+where $E$ is and $N\times N$ matrix whose upper $k\times k$ block is the identity and whose remaining
+entries are zero.  Rearranging a bit more we have
+$$
+U^{\intercal}\hat{Y} = EU^{\intercal}Y.
+$$
+
+To unpack this equation, let $u_{1},\ldots, u_{N}$ be the rows of the matrix $U$.  Since $U$
+is an orthogonal matrix, the column vectors $u_{i}^{\intercal}$ are an orthonormal basis for
+the $N$ dimensional space where the columns of $X_{0}$ lie.  We can write the target vector $Y$
+$$
+Y = \sum_{j=1}^{N} (u_{j}\cdot Y)u_{j}^{\intercal}.
+$$
+
+Then the projection $\hat{Y}$ of $Y$ into the subspace spanned by the data is obtained by dropping the last $N-k$ terms in the sum:
+
+$$
+\hat{Y}=\sum_{j=1}^{k} (u_{j}\cdot Y)u_{j}^{\intercal}
+$$
 
 ## Eigenvalues and Eigenvectors of Real Symmetric Matrices (The Spectral Theorem) {#sec:spectraltheorem}
 
