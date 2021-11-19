@@ -544,27 +544,28 @@ proofs in +@sec:spectraltheorem.
 
 ---
 
-----------------------------------------------------------------------------------------------
-Summary
-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+Summary                                                                
+-----------------------------------------------------------------------
 1. All of the eigenvalues $\lambda_{1},\ldots, \lambda_{l}$ of  $D$ are real.
 If $u^{\intercal}Du\ge 0$ for all $u\in\mathbf{R}^{k}$, then all eigenvalues $\lambda_{i}$ are non-negative.  In the latter case we say that $D$ is *positive semi-definite.*
 
-2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue
+2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue 
 $\lambda'$, then $v$ and $w$ are orthogonal: $v\cdot w = 0$.
 
-3. There is an orthonormal basis $u_{1},\ldots, u_{k}$  of $\mathbf{R}^{k}$ made up of eigenvectors of
+3. There is an orthonormal basis $u_{1},\ldots, u_{k}$  of $\mathbf{R}^{k}$ made up of eigenvectors of 
 $D$ corresponding to the eigenvalues $\lambda_{i}$.
 
-4. Let $\Lambda$ be the diagonal matrix with entries $\lambda_{1},\ldots, \lambda_{N}$ and let $P$
+4. Let $\Lambda$ be the diagonal matrix with entries $\lambda_{1},\ldots, \lambda_{N}$ and let $P$ 
 be the matrix whose columns are made up of the vectors $u_{i}$.  Then $D = P\Lambda P^{\intercal}.$
---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Table: Properties of Eigenvalues of Real Symmetric Matrices {#tbl:symmmat}
 
 ---
 
-If we combine this theorem with the facts summarized in  +@tbl:symmmat then we get a complete picture.  Let $D_{0}$ be the covariance matrix of our data.
+
+If we combine our theorem on the critical values with the spectral theorem we get a complete picture.  Let $D_{0}$ be the covariance matrix of our data.
 Since
 $$
 \sigma_{u}^2 = u^{\intercal}D_{0}u\ge 0 \hbox{(it's a sum of squares)}
@@ -734,7 +735,7 @@ capture most of the information in the data in a much lower dimensional setting.
 To illustrate how this is done, let $X$ be a $N\times k$ data matrix, let $X_{0}$ be its centered
 version, and let $D_{0} = \frac{1}{N}X_{0}^{\intercal}X$ be the associated covariance matrix.
 
-Apply the spectral theorem (described in +@tbl:symmmat) and proved in +@sec:spectraltheorem
+Apply the spectral theorem  (proved in +@sec:spectraltheorem)
 to the covariance matrix to obtain eigenvalues $\lambda_{1}\ge \lambda_{2}\ge\cdots \lambda_{k}\ge 0$
 and associated eigenvectors $u_{1},\ldots, u_{k}$.  The scores $S_{i}=X_{0}u_{i}$
 give the values of the data in the principal  directions.  The variance of $S_{i}$ is $\lambda_{i}$.
