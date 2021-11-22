@@ -5,6 +5,8 @@ METADATA = --metadata-file metadata.yml
 OUTPUT = -o build.pdf
 
 book: build.pdf
+	
+
 
 build.pdf : $(CHAPTERS)
 	cat $(CHAPTERS) | pandoc $(OPTIONS) $(FILTERS) $(METADATA) $(OUTPUT)
