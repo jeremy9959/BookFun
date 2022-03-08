@@ -542,7 +542,7 @@ eigenvectors of symmetric matrices.  Because these facts are so central to this 
 to other applications throughout machine learning and mathematics generally, we provide
 proofs in +@sec:spectraltheorem.
 
----
+\newpage
 
 -----------------------------------------------------------------------
 Summary                                                                
@@ -561,9 +561,6 @@ be the matrix whose columns are made up of the vectors $u_{i}$.  Then $D = P\Lam
 ------------------------------------------------------------------------
 
 Table: Properties of Eigenvalues of Real Symmetric Matrices {#tbl:symmmat}
-
----
-
 
 If we combine our theorem on the critical values with the spectral theorem we get a complete picture.  Let $D_{0}$ be the covariance matrix of our data.
 Since
@@ -749,7 +746,7 @@ To illustrate, let's look at an example.  We begin with a synthetic dataset $X_{
 $200$ samples and $15$ features.  The data (some of it) for some of the samples is shown in
 +@tbl:rawdata.
 
----
+
 
           f-0      f-1       f-2      f-3      f-4      \... f-10     f-11     f-12     f-13     f-14
   ------- -------- --------- -------- -------- -------- ---- -------- -------- -------- -------- --------
@@ -761,7 +758,7 @@ $200$ samples and $15$ features.  The data (some of it) for some of the samples 
 
 Table: Simulated Data for PCA Analysis {#tbl:rawdata}
 
----
+
 
 The full dataset is a  $200\times 15$ matrix;
 it has $3000$ numbers in it and we're not really equipped to make sense of it.  We could try

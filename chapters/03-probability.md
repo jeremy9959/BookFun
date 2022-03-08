@@ -1040,17 +1040,25 @@ P(M|Y,X) = Ae^{\|Y-XM\|^2/\sigma^2}e^{-\|M\|^2/\tau^{2}}
 $$
 where $A$ is a normalizing constant.
 
-The maximum likelihood estimate for the parameters $M$ occurs when $P(M|Y,X)$ is maximum,
+The first thing to note from this expression is that the posterior distribution for the $M$ parameters for regression are 
+themselves normally distributed. 
+
+The maximum likelihood estimate $M_{r}$ for the parameters $M$ occurs when $P(M|Y,X)$ is maximum,
 which we find by taking the derivatives.  Using the matrix algebra developed in our linear regression
 chapter, we obtain the equation
 $$
-(X^{\intercal}Y-(X^{\intercal}X)M)/\sigma^2-M/\tau^{2}=0
+(X^{\intercal}Y-(X^{\intercal}X)M_r)/\sigma^2-M_r/\tau^{2}=0
 $$
 or
 $$
-(X^{\intercal}X+\lambda)M=X^{\intercal}Y
+(X^{\intercal}X+s)M_r=X^{\intercal}Y
 $${#eq:ridgeformula}
-where $\lambda=\sigma^2/\tau^2$.
+where $s=\sigma^2/\tau^2$.
+
+Therefore the ridge coefficients are given by the equation
+$$
+M_{r}=(X^{\intercal}X+s)^{-1}X^{\intercal}Y
+$${#eq:ridgecoeffs}
 
 #### Practical aspects of ridge regression
 
@@ -1059,20 +1067,66 @@ are biased towards being smaller.  Beyond this, there are a number of implicatio
 affect its use in practice.
 
 First, we can put the Bayesian derivation of the ridge regression formulae in the background and focus our attention
-on @eq:ridgeformula.  We can treat the  parameter $\lambda$ (which must be non-negative) as "adjustable".  
+on @eq:ridgecoeffs.  We can treat the  parameter $s$ (which must be non-negative) as "adjustable".  
 
-One important consideration when using ridge regression is that @eq:ridgeformula is not invariant if we scale $X$ and $Y$ by a constant.  This is different from "plain"
+One important consideration when using ridge regression is that @eq:ridgecoeffs is not invariant if we scale $X$ and $Y$ by a constant.  This is different from "plain"
 regression where we consider the equation $Y=XM$.  In that case, rescaling $X$ and $Y$ by the same factor leaves the coefficients $M$ alone.  For this reason, ridge regression
 is typically used on centered, standardized coordinates.  In other words, we replace each feature $x_i$ by $(x_i-\mu_i)/\sigma_i$ where $\mu_i$ and $\sigma_i$ are the sample mean and standard
 deviation of the $i^{th}$ feature, and we replace our response variables $y_i$ similarly by $(y-\mu)/\sigma$ where $\mu$ and $\sigma$ are the mean and standard deviation of the $y$-values.
-Then we find $M$ using equation @eq:ridgeformula, perhaps experimenting with different values of $\lambda$, using our centered and standardized variables. 
+Then we find $M$ using equation @eq:ridgecoeffs, perhaps experimenting with different values of $s$, using our centered and standardized variables. 
 
-Recall that the matrix $D=X^{\intercal}X$
-that enters into @eq:ridgeformula is the covariance matrix.  Therefore in ridge regression we have replaced $D$ by $D+\lambda$.
-Since $D$ is a real symmetric matrix, as we've seen in Chapter 2 it is diagonalizable so that $ADA^{-1}$ is diagonal for
-an orthogonal matrix $A$ and has eigenvalues $\lambda_1\ge \ldots\ge \lambda_k$.  The *condition number* of $D$ is the ratio $\lambda_1/\lambda_k$ of the largest to the smallest
-eigenvalue.
+To emphasize that we are using centered coordinates, we write $X_{0}$ for our data matrix instead
+of $X$. Recall that the matrix $X_0^{\intercal}X_0$
+that enters into @eq:ridgeformula is $ND_{0}$ where $D_{0}$ is the covariance matrix. Therefore in ridge regression we have replaced $ND_0$ by $ND_0+s$.
+Since $D_0$ is a real symmetric matrix, as we've seen in Chapter 2 it is diagonalizable so that $AD_0A^{-1}$ is diagonal for
+an orthogonal matrix $A$ and has eigenvalues $\lambda_1\ge \ldots\ge \lambda_k$ which are the variances of the data
+along the principal directions.
+
+One effect of using ridge regression is that the eigenvalues of $ND_{0}+s$ are always at least
+$s>0$, so the use of ridge regression avoids the possibility that $D_{0}$ might not be invertible. 
+In fact, a bit more is true.  Numerical analysis tells us that when considering the problem
+of computing the inverse of  a matrix, we should look at its
+*condition number*, which is the ratio $\lambda_1/\lambda_k$ of the largest to the smallest eigenvalue.
 
 If the condition number of a matrix  is large, then results from numerical analysis show that it is *almost singular* and its inverse becomes very sensitive
-to small changes in the entries of the matrix.  However, the eigenvalues of $D+\lambda$ are $\lambda_{i}+\lambda$ and so the condition number becomes $(\lambda_1+\lambda)/(\lambda_k+\lambda)$.
-For larger values of $\lambda$, this condition number shrinks, and so the inverse of the matrix $D$ becomes better behaved.  In this way, ridge regression helps to improve the numerical stability of the linear regression algorithm.
+to small changes in the entries of the matrix.  However, the eigenvalues of $ND_0+s$ are $N\lambda_{i}+s$ and so the condition number becomes $(N\lambda_1+s)/(N\lambda_k+s)$.
+For larger values of $\lambda$, this condition number shrinks, and so the inverse of the matrix $ND_0+s$ becomes better behaved
+than $ND_{0}$.  In this way, ridge regression helps to improve the numerical stability of the linear regression algorithm.
+
+A second way to look at Ridge regression is to go back to the discussion of the singular value decomposition of the matrix $X_{0}$ in section @sec:svd.  There we showed that the SVD of
+$X_{0}$ yields an expression
+$$
+X_{0}=U\tilde{\Lambda}P^{\intercal}
+$$
+where $U$ and $P$ are orthogonal matrices and $\Lambda$ is an $N\times k$ matrix whose upper block
+is diagonal with eigenvalues $\sqrt{N\lambda_{i}}$.  The rows of $U$ gave us an orthonormal basis
+that allowed us to write the predicted vector $\hat{Y}$ as a projection:
+$$
+\hat{Y}=\sum_{i=1}^{k} (u_j\cdot Y)u_{j}^{\intercal}.
+$$
+
+If we repeat this calculation, but using the ridge regression formula, we obtain
+$$
+\hat{Y}_{r}=X_{0}M_r = U\tilde{\Lambda}P^{\intercal}(P\tilde{\Lambda}^{\intercal}U^{\intercal}U\tilde{\Lambda}P^{\intercal}+s)^{-1}P\tilde{\Lambda}^{\intercal}U^{\intercal}Y.
+$$
+Since $P$ is orthogonal, $P^{\intercal}=P^{-1}$, so
+$$
+P^{\intercal}(P\tilde{\Lambda}^2P^{\intercal}+s)^{-1}P=P^{-1}(P(\Lambda+s)P^{-1})P=(\Lambda+s)^{-1}
+$$
+and $\Lambda+s$ is a $k\times k$ diagonal matrix with entries $N\lambda_{i}+s$.
+
+Putting the pieces together we see that
+$$
+\hat{Y}_{r}=U\tilde{\Lambda}(\Lambda+s)^{-1}\tilde{\Lambda}U^{\intercal}Y.
+$$
+
+In the language of orthogonal projection, this means that
+$$
+\hat{Y}_{r} = \sum_{i=1}^{k} \frac{N\lambda_{i}}{N\lambda_{i}+s}(u_j\cdot Y)u_{j}^{\intercal}.
+$$
+
+In other words, the predicted value computed by ridge regression is obtained by projecting
+$Y$ into the space spanned by the feature vectors, but weighting the different principal components 
+by $N\lambda_{i}/(N\lambda_{i}+s)$.  With this weighting, the  principal components with smaller variances are weighted less than those with larger variances.  For this reason,
+ridge regression is sometimes called a *shrinkage* method.
+
