@@ -550,8 +550,7 @@ Summary
 1. All of the eigenvalues $\lambda_{1},\ldots, \lambda_{l}$ of  $D$ are real.
 If $u^{\intercal}Du\ge 0$ for all $u\in\mathbf{R}^{k}$, then all eigenvalues $\lambda_{i}$ are non-negative.  In the latter case we say that $D$ is *positive semi-definite.*
 
-2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue 
-$\lambda'$, then $v$ and $w$ are orthogonal: $v\cdot w = 0$.
+2. If $v$ is an eigenvector for $D$ with eigenvalue $\lambda$, and $w$ is an eigenvector with a different eigenvalue  $\lambda'$, then $v$ and $w$ are orthogonal: $v\cdot w = 0$.
 
 3. There is an orthonormal basis $u_{1},\ldots, u_{k}$  of $\mathbf{R}^{k}$ made up of eigenvectors of 
 $D$ corresponding to the eigenvalues $\lambda_{i}$.
@@ -893,9 +892,10 @@ X_{0} = U\tilde{\Lambda}P^{\intercal}
 $$ {#eq:svd}
 where $U$ and $P$ are orthogonal matrices of size $N\times N$ and $k\times k$ respectively, and $\tilde{\Lambda}$
 is an $N\times k$ diagonal matrix. This is called the "singular value decomposition" of $X_{0}$,
-and the entries of $\tilde{\Lambda}$ are called the singular values.
-
-## Linear Regression, Singular Values, and PCA {#sec:lrsvpca}
+and the entries of $\tilde{\Lambda}$ are called the singular values.  If we let $u_1,\ldots, u_k$
+be the first $k$ rows of $U$, then the $k$ column vectors $u_{i}^{\intercal}$ are an orthonormal
+basis for the feature space spanned by the columns of $X_{0}$, and they point in the "principal directions"
+for the data matrix $X_{0}$. 
 
 In this section we take a slight detour and apply what we've learned about the covariance matrix,
 principal components, and the singular value decomposition to the original problem of linear regression that
