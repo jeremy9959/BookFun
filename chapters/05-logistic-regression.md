@@ -82,15 +82,54 @@ $$
 where $C$ is a constant (it would be a binomial coefficient).  Combining this for different values of $x$, we see that the likelihood of the data is
 the product
 $$
-L = C' p(-3)^{10}(1-p(-3))^{90}p(-2)^{18}(1-p(-2))^{82}\cdots p(3)^{86}(1-p(3))^{14}
+L(a,b) = C' p(-3)^{10}(1-p(-3))^{90}p(-2)^{18}(1-p(-2))^{82}\cdots p(3)^{86}(1-p(3))^{14}
 $$
 where $C'$ is another constant.  Each $p(x)$ is a function of the parameters $a$ and $b$, so all together this is a function of those two parameters.
 Our goal is to maximize it. 
 
 One step that simplifies matters is to consider the logarithm of the likelihood:
 $$
-\log L = \sum_{i=0}^{6} \left[ x_{i}\log(p(x_{i})) + (100-x_{i})\log(1-p(x_{i}))\right]
+\log L (a,b)= \sum_{i=0}^{6} \left[ x_{i}\log(p(x_{i})) + (100-x_{i})\log(1-p(x_{i}))\right] +C''
 $$
+where $C''$ is yet another constant.  Since our ultimate goal is to maximize this, the value of $C''$ is irrelevant and we can drop it.
+### Another point of view on logistic regression
+
+In @tbl:logistic_data we summarize the results of our experiments in groups by the value of the $x$ parameter.  We can think of the data somewhat differently,
+by instead listing each event separately, giving the parameter value $x$ and the outcome $0$ or $1$.  From this point of view the data summarized in @tbl:logistic_data
+would correspond to a matrix with $700$ rows and two columns.  The first $100$ rows (corresponding to the first column of the table) would have first entry $-3$s. In the second column,
+$90$ of the rows would have second entry $0$, and $10$ would have second entry $1$.
+
+To see how such a data matrix would arise in practice, imagine we are studying our advertising data and, for each potential customer, we record how many times they saw our ad, and then
+either $0$ or $1$ if the did not or did purchase our product.  We organize this data into an $N\times 2$ matrix $X$ where $N$ is the number of customers.  This matrix fits our "tidy"
+convention, since each row corresponds to a sample (a customer) and each column a feature (namely, the number of views and whether or not they made a purchase).  
+
+One way to think about logistic regression in this setting is that we are trying to fit a function that, given the first column of the matrix, yields the second column.  This looks like
+a regression problem, except that the "y"-value we are estimating only takes the values $0$ or $1$.   Instead of finding a deterministic function, as we did in linear regression,
+instead we try to fit a logistic function that captures the likelihood that the $y$-value is a $1$ given the $x$-value.  This point of view accounts for the use of the word "regression"
+in the description of this algorithm.
+
+If, as above, we think of each row of the matrix as an independent trial, then the chance of a $1$ in X[i,1] is $p(X[i,0])$ and the chance of a zero is $1-p(X[i,0])$.  The probability
+of obtaining the matrix $X$ as a whole is
+$$
+L(X,a,b) = C \prod_{i=0}^{N-1} p(X[i,0])^{X[i,1]}(1-p(X[i,1])^{(1-X[i,1])}
+$$
+where $C$ is a constant and we are exploiting the trick that, since $X[i,1]$ is either zero or one, $1-X[i,1]$ is correspondingly one or zero.  Thus only $p(X[i,0])$ or $1-p(X[i,0])$
+occurs in each term of the product.  If we group the terms according to $X[i,0]$ we obtain our earlier formula for $L(a,b)$.
+
+This expresssion yields an apparently similar formula for the log-likelihood (up to an irrelevant constant):
+$$
+\log L(X,a,b) = \sum_{i=0}^{N-1} X[i,1]\log p(X[i,0]) + (1-X[i,1])\log (1-p(X[i,0])).
+$$
+Using vector notation, this can be further simplified:
+$$
+\log L(X,a,b) = X[:,1]\cdot \log p(X[:,0]) + (1-X[:,1])\cdot \log (1-p(X[:,0])).
+$$
+
+
+
+We might naively try to maximize this by taking the derivatives with respect to $a$ and $b$ and setting them to zero, but this turns out to be impractical.
+So we need a different approach to finding the parameters $a$ and $b$ which maximize this likelihood function.  We will return to this problem later, but before
+we do so we will look at some generalizations and broader applications of the logistic model.
 
 
 
