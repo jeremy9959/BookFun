@@ -1,4 +1,4 @@
-CHAPTERS = $(shell find chapters/ -type f -name '*.md' | sort)
+CHAPTERS = $(shell find chapters/ -type f -name '05-*.md' | sort)
 FILTERS = --filter pandoc-xnos --citeproc
 OPTIONS = -N --standalone --mathjax --toc --top-level-division=chapter
 METADATA = --metadata-file metadata.yml
