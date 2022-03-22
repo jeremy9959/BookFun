@@ -75,7 +75,7 @@ this prior and obtain a posterior distribution on $a$ and $b$.  For this first l
 notion of "best" and ask what is the most likely choice of $a$ and $b$ to yield this data.
 
 To apply the maximum likelihood approach, we need to ask "for (fixed, but unknown) values of $a$ and $b$, what is the likelihood that a logistic model
-with those parameters would yield the data we have collected?  Each column in @tbl:logistic_data represents $100$ Bernoulli trials with a fixed probability
+with those parameters would yield the data we have collected?" Each column in @tbl:logistic_data represents $100$ Bernoulli trials with a fixed probability
 $p(x)$.  So, for example,  the chance $q$ of obtaining $10$ positive results with $x=-3$ is given by
 $$
 q(-3)=C p(-3)^{10}(1-p(-3))^{90}
@@ -190,7 +190,7 @@ D_{v}f(x) = \sum_{i=0}^{k-1} \frac{\partial f}{\partial x_{i}}\frac{dx_{i}}{dt} 
 $$
 where
 $$
-\nabla f = \left[\frac{\partial f}{x_{i}}\right]_{i=0}^{k-1}
+\nabla f = \left[\frac{\partial f}{\partial x_{i}}\right]_{i=0}^{k-1}
 $$
 is the gradient of $f$.  This argument yields the following result.
 
@@ -326,7 +326,7 @@ and obtain
 $$
 -\sum_{i=0}^{N-1}(1-y_{i})\sigma(\sum_{j=0}^{k}x_{ij}m_{j})x_{is}.
 $$
-The term $\sum_{i=0}^{N-1} y_{i}\sigma(\sum_{j=0}^{k}x_{ij}x_{is}m_{j})$ cancels, yielding
+The term $\sum_{i=0}^{N-1} y_{i}\sigma(\sum_{j=0}^{k}x_{ij}m_{j})x_{is}$ cancels, yielding
 $$
 \frac{\partial L(M)}{m_{s}} = -\sum_{i=0}^{N-1} (y_{i}-\sigma(\sum_{j=0}^{k}x_{ij}m_{j}))x_{is}.
 $$  
@@ -334,3 +334,22 @@ Looked at properly this is our desired formula:
 $$
 -\nabla L(M) = (\sigma(XM)-Y)^{\intercal}X.
 $$
+
+### Gradient Descent on our synthetic data
+
+Now we can apply gradient descent to find a maximum likelihood logistic model 
+for the sample data that we generated from the logistic model and reported in @tbl:logistic_data.
+With the probability given as
+$$
+p(x) = \frac{1}{1+e^{-ax-b}}
+$$
+we make an initial guess of $a=1$ and $b=0$ set a learning rate $\nu=.001$, and run the
+gradient descent algorithm for $30$ iterations.  We plot the negative log-likelihood 
+for this algorithm one the left in @fig:logisticloglike, where we see that it drops swiftly to a minimum value.
+The corresponding parameter values are $a=.6717$ and $b=-.0076$, and the fit of the the corresponding
+logistic curve to the observed ata is shown on the right in @fig:logisticloglike.
+
+![Max Likelihood Gradient Descent for Logistic Fitting](img/LogisticLogLikelihoodAndFit.png){#fig:logisticloglike width=100%}
+
+
+
