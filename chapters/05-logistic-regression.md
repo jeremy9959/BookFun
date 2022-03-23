@@ -357,4 +357,19 @@ The parameters used to generate the data are close to this; they were $a=log(2)=
 ### Gradient Descent and Logistic Regression on "real" data
 
 We conclude this first look at logistic regression and gradient descent by analyzing some simple real data.
-This dataset consists of about $2200$ customers who patronize a certain food store.  Among the features in the data set are two that we will study using logistic regression.  The first
+This dataset consists of about $2200$ customers who patronize a certain food store.  Among the features in the data set is a field giving the total dollars spent at the store by a customer; we will study that
+feature and its relationship to the question of whether or not the customer accepted a special offer from the store. (see @KaggleFoodData for the original data source).
+
+![Food Marketing Data: Histograms of Expenditures and Response](img/FoodDataPlot.png){#fig:fooddataplot width=100%}
+
+The two plots in +@fig:fooddataplot summarize the data.  The first plot is a histogram showing the amounts
+spent by the customers; the second shows the distribution of responses.   
+
+We would like to know how expenditures increase the likelihood of customers accepting our offer.
+We therefore fit a logistic model to the data.  The result is shown in +@fig:foodlogisticfit.
+
+![Logistic Model for Food Marketing](img/FoodLogisticFit.png){#fig:foodlogisticfit width=50%}
+
+## Logistic Regression and classification
+
+
