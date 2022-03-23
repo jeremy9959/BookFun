@@ -352,4 +352,9 @@ logistic curve to the observed data is shown on the right in @fig:logisticloglik
 ![Max Likelihood Gradient Descent for Logistic Fitting](img/LogisticLogLikelihoodAndFit.png){#fig:logisticloglike width=100%}
 
 
+The parameters used to generate the data are close to this; they were $a=log(2)=$.6931$ and $b=0$.
 
+### Gradient Descent and Logistic Regression on "real" data
+
+We conclude this first look at logistic regression and gradient descent by analyzing some simple real data.
+This dataset consists of about $2200$ customers who patronize a certain food store.  Among the features in the data set are two that we will study using logistic regression.  The first
