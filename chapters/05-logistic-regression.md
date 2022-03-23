@@ -347,7 +347,7 @@ we make an initial guess of $a=1$ and $b=0$ set a learning rate $\nu=.001$, and 
 gradient descent algorithm for $30$ iterations.  We plot the negative log-likelihood 
 for this algorithm one the left in @fig:logisticloglike, where we see that it drops swiftly to a minimum value.
 The corresponding parameter values are $a=.6717$ and $b=-.0076$, and the fit of the the corresponding
-logistic curve to the observed ata is shown on the right in @fig:logisticloglike.
+logistic curve to the observed data is shown on the right in @fig:logisticloglike.
 
 ![Max Likelihood Gradient Descent for Logistic Fitting](img/LogisticLogLikelihoodAndFit.png){#fig:logisticloglike width=100%}
 
