@@ -372,4 +372,20 @@ We therefore fit a logistic model to the data.  The result is shown in +@fig:foo
 
 ## Logistic Regression and classification
 
+Beyond the kind of probability prediction that we have discussed up to this point, logistic regression is one of the most powerful
+techniques for attacking the classification problem.  Let's start our discussion of this with a simplified version of one
+of the most famous machine learning benchmark problems, the MNIST (Modified National Institute of Science
+and Technology) dataset of handwritten numerals.  This dataset consists of $60000$ labelled grayscale 
+images of handwritten digits from $0$ to $9$.  Each image is stored as a $28x28$ array of integers from $0$ to $255$.  Each
+cell of the array corresponds to a "pixel" in the image, and the contents of that cell is a grayscale value.
+
+For example, +@fig:MNISTOne is a picture of a handwritten "1" from the MNIST dataset.  
+
+![Handwritten One from MNIST](img/MNISTOne.png){#fig:MNISTOne width=100%}
+
+
+
+ The
+classification problem is "Given a $28x28$ array of grayscale values, determine which digit is represented." See @MNISTDatabase
+for the a more detailed description of how the dataset was constructed.
 
