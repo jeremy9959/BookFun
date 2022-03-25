@@ -373,19 +373,77 @@ We therefore fit a logistic model to the data.  The result is shown in +@fig:foo
 ## Logistic Regression and classification
 
 Beyond the kind of probability prediction that we have discussed up to this point, logistic regression is one of the most powerful
-techniques for attacking the classification problem.  Let's start our discussion of this with a simplified version of one
+techniques for attacking the classification problem.  Let's start our discussion with a sample problem that is a simplified version of one
 of the most famous machine learning benchmark problems, the MNIST (Modified National Institute of Science
 and Technology) dataset of handwritten numerals.  This dataset consists of $60000$ labelled grayscale 
 images of handwritten digits from $0$ to $9$.  Each image is stored as a $28x28$ array of integers from $0$ to $255$.  Each
-cell of the array corresponds to a "pixel" in the image, and the contents of that cell is a grayscale value.
+cell of the array corresponds to a "pixel" in the image, and the contents of that cell is a grayscale value.  See @MNISTDatabase
+for the a more detailed description of how the dataset was constructed.
 
-For example, +@fig:MNISTOne is a picture of a handwritten "1" from the MNIST dataset.  
+In +@fig:MNISTOne is a picture of a handwritten "1" from the MNIST dataset.  
 
 ![Handwritten One from MNIST](img/MNISTOne.png){#fig:MNISTOne width=100%}
 
+**Classification Problem for MNIST:** Given a $28x28$ array of grayscale values, determine which digit is represented. 
+
+At first glance, this does not look like a logistic regression problem.  To make the connection clearer, let's simplify the problem
+and imagine that our database contains only labelled images of zeros and ones -- we'll worry about how to handle the full problem later.
+So now our task is to determine which images are zeros, and which are ones.  
+
+Our approach will be to view each image as a vector of length $784=28*28$ by stringing the pixel values row by row into a one dimensional vector,
+which following our conventions yields a matrix of size $N\times 784$ where $N$ is the number of images.   Since we may also need an "intercept",
+we add a column of $1$'s to our images yielding a data matrix $X$ of size $N\times 785$. The labels $y$ form a column vector 
+of size $N$ containing zeros and ones.
+
+The logistic regression approach asks us to find the "best" vector $M$ so that, for a given image vector $x$ (extended by adding a one at the end), the function
+$$
+p(x)=\frac{1}{1+e^{-xM}}
+$$ 
+is close to $1$ if $x$ represents a one, and is close to zero if $x$ represents zero.  Essentially we think of $p(x)$ as giving the probability that the vector $x$
+represents an image of a one.  If we want a definite choice, then we can set a threshold value $p_0$ and say that the image $x$ is a one if $p(x)>p_0$ and
+zero otherwise.  The natural choice of $p_0=.5$ amounts to saying that we choose the more likely of the two options under the model.
+
+ Since we are applying the logistic model we are assuming:
+
+-  that the value of each pixel in the image contributes something towards the chance of the total
+image being one;
+-  and the different pixels have independent, and additive effects on the odds of getting a one. 
+
+If we take this point of view, then we can ask for the vector
+$M$ that is *most likely* to account for the labellings, and we can use our maximum likelihood gradient descent method to find $M$.
+
+This approach is surprisingly effective.  With the MNIST zeros and ones, and the gradient descent method discussed above,
+one can easily find $M$ so that the logistic model predicts the correct classification with accuracy in the high 90% range. 
+
+### Weights as filters
+
+One interesting aspect of using logistic regression on images for classification is that the we can interpret the optimum set of coefficients $M$
+as a kind of filter for our images.  Remember that $M$ is a vector with $785$ entries, the last of which is an "intercept".  
+The logistic model
+says that, for an image vector $x$, the log-odds that the image is a one is
+given by
+$$
+\log \frac{p}{1-p} = \sum_{i=0}^{783} M_{i}x_{i} + M_{784}.
+$$
+This means that if the value of $M_{i}$ is positive, then large values in the $i^{th}$ pixel *increase* the chance that our image is a one;
+while if $M_{i}$ is negative, large values *decrease* the chance.  If $M_{i}$ is negative, the reverse is true.  However, the values $x_{i}$ are
+the gray scale "darkness" of the image, so the entries of $M$ emphasize or de-emphasize dark pixels according to whether that dark pixel is more or less
+likely to occur in a one compared to a zero. 
+
+This observation allows us to interpret the weights $M$ as a kind of "filter" for the image.  In fact, if we rescale the entries of $M$ (omitting the intercept) so that they lie between $0$ and $255$,
+we can arrange them as a $28\times 28$ array and plot them as an image.  The result of doing this for a selection of MNIST zeros and ones is shown in +@fig:zero_one_weights.  The red (or positive) weights in the middle of the image tell us that if those pixels are dark, the image is more likely to be a one;
+the blue (or negative) weights scattered farther out tell us that if those pixels are dark, the image is more likely to be a zero. 
+
+![Rescaled weights plotted as an image (blue is negative).](img/zero_one_weights.png){#fig:zero_one_weights width=80%}
 
 
- The
-classification problem is "Given a $28x28$ array of grayscale values, determine which digit is represented." See @MNISTDatabase
-for the a more detailed description of how the dataset was constructed.
+
+
+
+
+
+
+
+
+
 
