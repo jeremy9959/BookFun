@@ -395,6 +395,9 @@ which following our conventions yields a matrix of size $N\times 784$ where $N$ 
 we add a column of $1$'s to our images yielding a data matrix $X$ of size $N\times 785$. The labels $y$ form a column vector 
 of size $N$ containing zeros and ones.
 
+We will also simplify the data but converting the gray-scale images to monochrome by converting gray levels
+up to $128$ as "white" and beyond $128$ as "black".
+
 The logistic regression approach asks us to find the "best" vector $M$ so that, for a given image vector $x$ (extended by adding a one at the end), the function
 $$
 p(x)=\frac{1}{1+e^{-xM}}
@@ -431,10 +434,97 @@ the gray scale "darkness" of the image, so the entries of $M$ emphasize or de-em
 likely to occur in a one compared to a zero. 
 
 This observation allows us to interpret the weights $M$ as a kind of "filter" for the image.  In fact, if we rescale the entries of $M$ (omitting the intercept) so that they lie between $0$ and $255$,
-we can arrange them as a $28\times 28$ array and plot them as an image.  The result of doing this for a selection of MNIST zeros and ones is shown in +@fig:zero_one_weights.  The red (or positive) weights in the middle of the image tell us that if those pixels are dark, the image is more likely to be a one;
+we can arrange them as a $28\times 28$ array and plot them as an image.  The result of doing this for a selection of MNIST zeros and ones is shown on the left in +@fig:weights.  The red (or positive) weights in the middle of the image tell us that if those pixels are dark, the image is more likely to be a one;
 the blue (or negative) weights scattered farther out tell us that if those pixels are dark, the image is more likely to be a zero. 
 
-![Rescaled weights plotted as an image (blue is negative).](img/zero_one_weights.png){#fig:zero_one_weights width=80%}
+![Rescaled weights (blue is negative). Top: 0 vs 1. Bottom: 3 vs 8.](img/weights.png){#fig:weights width=100%}
+
+What's important to notice here is that we did not design this "filter" by hand, based on our understanding of the differences between a handwritten zero and one; instead, the algorithm "learned"
+the "best" filter to optimize its ability to distinguish these digits.
+
+Here's another example.  Suppose we redo the MNIST problem above, but we try to distinguish 3's from 8's.  
+We have about 4500 of each digit, and we label the 3's with zero and the 8's with one.  Then we use our
+maximum likelihood optimization.  In this case, the filter is shown on the right in +@fig:weights.
+
+## Multiclass Logistic Regression
+
+One could attack the problem of classifying the ten distinct classes of digits by,  for example,
+labelling all of the zeros as class zero and everything else as class one, and finding a set of weights
+that distinguishes zero from everything else.  Then, in turn, one could do the same for each of the other digits.
+Given an unknown image, this would yield a set of probabilities from which one could choose the most likely
+class.  This type of classification is called "one vs rest", for obvious reasons.  It seems more natural,
+however, to construct a model that, given an image, assigns a probability that it belongs to each of the
+different possibilities.  It is this type of multiclass logistic regression that we will study now.
+
+Our goal is to build a model that, given an unknown image, returns a vector of ten probabilities,
+each of which we can interpret as the chance that our unknown image is in fact of a particular digit.
+If we *know* the image's class, then it's probability vector *should* be nine zeros with a single one
+in the position corresponding to the digit.  So, for example, if our image is of a two, then
+the vector of probabilities
+
+$$
+\left[ \begin{matrix} p_0 & p_1 & p_2 &\cdots & p_8 & p_9\\\end{matrix}\right]=\left[\begin{matrix} 0 &0 & 1 & \cdots & 0 & 0\\\end{matrix}\right]
+$$
+
+where $p_i$ is the probability that our image is the digit $i$. Notice also that the probabilities $p_i$ must sum to one.  We encode the class membership of our samples by constructing an $N\times r$ matrix $Y$,
+each row of which has a one in column $j$ if that sample belongs to class $j$, and zeros elsewhere.
+This type of representation is sometimes called "one-hot" encoding. 
+
+So let's  assume we have $N$ data points, each with $k$ features, and a one-hot encoded, $N\times r$
+matrix of labels $Y$ encoding the data into $r$ classes.
+So our data matrix will be $N\times k$.   
+Our goal will be to find a $k\times r$ matrix of "weights" $M$ so that, for each sample, we compute
+$r$ values, given by the rows of the matrix $NM$.
+These $r$ values are linear functions of the features, but we need probabilities.  In the one-dimensional
+case, we used the logistic functions $\sigma$ to convert our linear function to probabilities.  In
+this higher dimensional case we use a generalization of $\sigma$ called the "softmax" function.
+
+**Definition:** Let $F:\mathbf{R}^r\to\mathbf{R}^{r}$ be the function
+$$
+F(z_1,\ldots, z_r) = \sum_{j=1}^{r} e^{z_{i}}
+$$
+and let $\sigma:\mathbf{R}^{r}\to \mathbf{R}^{r}$ be the function
+$$
+\sigma(z_1,\ldots, z_n) = \left[\begin{matrix} \frac{e^{z_1}}{F} & \cdots & \frac{e^{z_{r}}}{F}\end{matrix}\right].
+$$
+Notice that the coordinates of the vector $\sigma(z_1,\ldots,z_n)$ are all between $0$ and $1$, and their
+sum is one.
+
+Our multiclass logistic model will say that the probability vector that gives the probabilities
+that a particular sample belongs to a particular class is given by the rows of the matrix
+$\sigma(XM)$, where $\sigma(XM)$ means applying the function $\sigma$ to each row of the $N\times r$
+matrix $XM$.
+
+### Multiclass logistic regression - the likelihood
+
+The rows of the matrix $\sigma(XM)$ are the vectors of probabilities summing to one which are supposed
+to be the chances that the corresponding sample belongs to each of the possible classes.  If the
+$j^{th}$ sample belongs to class $i$, then the probability of this outcome assigned by our model
+is $p_{ji}$.  Recall that we have captured the class membership of the samples in a $k\times r$ matrix $Y$
+which is "one-hot" encoded.  So we can represent the chance that sample $j$ belongs to class $i$
+as
+$$
+P(\hbox{\rm sample i in class j})=\prod_{i=1}^{r} p_{ji}^{y_{ji}}.
+$$
+Taking the logarithm, we find
+$$
+\log P = y_{ji}\sum_{i=1}^{r} \log p_{ji} = \sum_{i=1}^{r} y_{ji} \log \sigma(XM[j,:])[i].
+$$
+Since each sample is independent, the total likelihood is the product of these probabilites, and
+the log-likelihood the corresponding sum.
+$$
+L(M) = \sum_{j=1}^{N} \sum_{i=1}^{r}y_{ji}\log\sigma(XM[j,:])[i]
+$$
+or, using matrix notation,
+$$
+\log L(M) = Y^{\intercal}\log\sigma(XM).
+$$
+This is the multiclass generalization of +@eq:logisticregressionlikelihood.  To see the connection,
+notice that, in the case where we have only two
+classes, the two columns of $Y$ sum to one, as do the two probabilities in $\sigma(XM)$.
+
+
+### Multiclass logistic regression - the gradient.
 
 
 
