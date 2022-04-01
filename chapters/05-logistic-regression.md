@@ -527,8 +527,66 @@ notice that, in the case where we have only two
 classes, the two columns of $Y$ sum to one, as do the two probabilities in $\sigma(XM)$.
 
 
-### Multiclass logistic regression - the gradient.
+### Multiclass logistic regression - the gradient
 
+As in the two class case, we will use gradient descent to find the maximum likelihood parameters $M$
+given the data $X$.  To carry this out, we need to figure out the gradient of the log-likelihood,
+which is an exercise in the chain rule.  Amazingly, the solution comes out to be formally the same
+as the two class case.
+
+**Proposition:** The gradient of $L(M)$ (expressed as a $k\times r$ matrix) is
+$$
+\nabla L(M) = X^{\intercal}(Y-\sigma(XM)).
+$$
+
+For the sake of the challenge, let's work this out.   First of all, let's 
+let $Z=XM$ with entries $z_{ij}$ for $0\le i\le N-1$ and $0\le j\le r-1$.  Then
+$$
+z_{ij}=\sum_{s=0}^{k-1} x_{is}m_{sj}.
+$$
+And as before if we let $P=\sigma(XM)$ then the entries of $P$ are
+$$
+p_{ij} = \sigma_{j}(z_{i0},\ldots, z_{i,r-1})
+$$
+where
+$$
+\sigma_{j}(z_0,z_1,\ldots, z_{r-1}) = \frac{e^{z_{j}}}{\sum_{t=0}^{r-1}e^{z_{t}}}
+$$
+
+The first computation we need is to establish that
+$$
+\frac{\partial\log\sigma_{j}}{\partial z_{s}} = \begin{cases} -\sigma_{s} & j\not= s \\ 1-\sigma_{j} & j=s \end{cases}
+$${#eq:dsigmadz}
+
+Next, we find
+$$
+\frac{\partial\log\sigma_{ij}}{\partial m_{ab}} =\sum_{t=0}^{r-1} \frac{\partial \log\sigma_{ij}}{\partial z_{it}}\frac{\partial z_{it}}{\partial m_{ab}} = 
+    \begin{cases} 0 & t\not=b \\ x_{ia}\frac{\partial\log \sigma_{ij}}{\partial z_{ib}} & t=b \end{cases}
+$${#eq:dlogsigmadm}
+
+Putting this into our expression for $\log L(M)$, we have
+$$
+\frac{\partial L}{\partial m_{ab}} = \sum_{i=0}^{N-1}y_{ib}x_{ia}-x_{ia}\sigma_{ib}\sum_{j=0}^{r-1}y_{ij}
+$$
+Since the row sums of $Y$ are 1,  the $a,b$ entry of the gradient is
+$$
+\sum_{i=0}^{N-1} x_{ia}y_{ib} - x_{ia}\sigma_{ib} = \sum_{i=0}^{N-1} x'_{ai}y_{ib} - x'_{ai}\sigma_{ib}
+$$
+where $x'$ are the entries of $X^{T}$.  This formula yields the entries in the matrix
+$$
+\nabla L(M) = X^{\intercal}(Y-\sigma(XM))
+$$
+as claimed.
+
+### Multiclass Logistic Regression -- results
+
+If we use gradient descent to construct a classifier for the the $60000$ images in the MNIST set, we can get accuracy in the 90\% range. 
+Just as in the two class case, the weights given by the columns of $M$ are "filters" that emphasize and de-emphasize
+certain pixels leading to  a probability that an image is of a particular number. See +@fig:tenclassweights for a graphical presentation of
+the weights that come from such an experiment, with a learning rate of $\nu=.000001$,
+a random starting point, and 2000 iterations. 
+
+![Weights for 10-class Logistic Regression on MNIST](img/mnist_multiclass_weights.png){#fig:tenclassweights}
 
 
 
