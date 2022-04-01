@@ -517,14 +517,19 @@ L(M) = \sum_{j=1}^{N} \sum_{i=1}^{r}y_{ji}\log\sigma(XM[j,:])[i]
 $$
 or, using matrix notation,
 $$
-\log L(M) = Y^{\intercal}\log\sigma(XM).
+\log L(M) = \mathop{tr}(Y^{\intercal}\log\sigma(XM)) = Y\cdot \log\sigma(XM).
 $$
+where the last expression means the "dot product" of the matrices -- the sum of all products
+of corresponding entries. 
+
 This is the multiclass generalization of +@eq:logisticregressionlikelihood.  To see the connection,
 notice that, in the case where we have only two
 classes, the two columns of $Y$ sum to one, as do the two probabilities in $\sigma(XM)$.
 
 
 ### Multiclass logistic regression - the gradient.
+
+
 
 
 
